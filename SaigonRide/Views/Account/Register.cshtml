@@ -1,49 +1,147 @@
-﻿<div class="container mt-5">
-    <div class="card shadow mx-auto" style="max-width: 400px;">
-        <div class="card-body">
-            <h3 class="text-center mb-4">Sign up</h3>
-            
-            <div class="btn-group w-100 mb-3">
-                <input type="radio" class="btn-check" name="userType" id="local" checked>
-                <label class="btn btn-outline-primary" for="local">Local Tourist</label>
-                
-                <input type="radio" class="btn-check" name="userType" id="tourist">
-                <label class="btn btn-outline-primary" for="tourist">Foreign Tourist</label>
+﻿@model SaigonRide.Models.Entities.User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - SaigonRide</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body, html { height: 100%; margin: 0; font-family: 'Segoe UI', sans-serif; }
+        .bg-image {
+            background-image: url('/images/scooter.jpg');
+            background-size: cover; 
+            background-position: center;
+            height: 100%; display: flex; 
+            align-items: center; 
+            justify-content: center;
+        }
+
+        .register-card {
+            background: white; 
+            padding: 40px; 
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+            width: 100%; max-width: 500px;
+        }
+
+        .btn-next {
+            background-color: #2D2D2D; 
+            color: white; 
+            border-radius: 25px;
+            padding: 12px; 
+            font-weight: bold; 
+            border: none; 
+            width: 100%; 
+            margin-top: 1rem;
+        }
+
+        .btn-next:hover { 
+            background-color: #000;
+        }
+
+        .form-label { 
+            font-size: 0.75rem; 
+            font-weight: bold; 
+            color: #666; 
+            text-transform: uppercase;
+        }
+
+        .user-type-toggle {
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 20px;
+        }
+
+        .user-type-btn {
+            flex: 1; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px;
+            background: white; 
+            cursor: pointer; 
+            text-align: center; 
+            transition: 0.3s;
+        }
+
+        .user-type-btn.active {
+            background: #007bff; 
+            color: white; 
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-image">
+    <div class="register-card">
+        <div class="mb-3">
+            <h4 class="fw-bold">Saigon<span class="text-primary">Ride</span></h4>
+        </div>
+        <h2 class="fw-bold mb-2">Create an account</h2>
+        <p class="text-muted mb-4 small">Join us to start your journey around the city.</p>
+
+        <form asp-action="Register" method="post">
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input asp-for="FullName" class="form-control form-control-lg" placeholder="Name" required />
             </div>
 
-            <form asp-controller="Account" asp-action="Register" method="post">
-                <input type="text" name="FullName" class="form-control mb-2" placeholder="Fullname" required>
-    
-                <input type="email" name="Email" class="form-control mb-2" placeholder="Email" required>
+            <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input asp-for="Email" type="email" class="form-control form-control-lg" placeholder="name@example.com" required />
+            </div>
 
-                <input type="password" name="Password" class="form-control mb-2" placeholder="Password" required>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control form-control-lg" placeholder="••••••••" required />
+            </div>
 
-                <input type="hidden" name="UserType" id="selectedUserType" value="Local">
+            <label class="form-label">Are you a Local or Tourist?</label>
+            <div class="user-type-toggle">
+                <div class="user-type-btn active" onclick="toggleUserType('Local')">Local</div>
+                <div class="user-type-btn" onclick="toggleUserType('Tourist')">Foreign Tourist</div>
+            </div>
+            <input type="hidden" asp-for="UserType" id="UserType" value="Local" />
 
-                <div id="localFields">
-                    <input type="text" name="IdNumber" class="form-control mb-2" placeholder="CCCD Number">
-                </div>
-    
-                <div id="touristFields" style="display:none;">
-                    <input type="text" name="IdNumber" class="form-control mb-2" placeholder="Passport Number">
-                </div>
+            <div class="mb-4">
+                <label id="idLabel" class="form-label">National ID (CCCD)</label>
+                <input asp-for="IdNumber" id="IdInput" class="form-control form-control-lg" placeholder="Enter your ID number" required />
+            </div>
 
-                <button type="submit" class="btn btn-primary w-100 mt-3">Create Account</button>
-            </form>
+            <button type="submit" class="btn btn-next">Create Account</button>
+        </form>
+
+        <div class="text-center mt-3 small">
+            Already have an account? <a asp-action="Login" class="text-decoration-none fw-bold">Login</a>
         </div>
     </div>
 </div>
 
 <script>
-    document.getElementById('local').addEventListener('change', function() {
-        document.getElementById('localFields').style.display = 'block';
-        document.getElementById('touristFields').style.display = 'none';
-        document.getElementById('selectedUserType').value = 'Local';
-    });
+    function toggleUserType(type) {
+        document.getElementById('UserType').value = type;
+        
+        const btns = document.querySelectorAll('.user-type-btn');
+        btns.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
 
-    document.getElementById('tourist').addEventListener('change', function() {
-        document.getElementById('localFields').style.display = 'none';
-        document.getElementById('touristFields').style.display = 'block';
-        document.getElementById('selectedUserType').value = 'Tourist';
-    });
+        const label = document.getElementById('idLabel');
+        const input = document.getElementById('IdInput');
+        
+        if (type === 'Local') {
+            label.innerText = 'National ID (CCCD)';
+            input.placeholder = 'Enter 12-digit CCCD';
+        } else {
+            label.innerText = 'Passport Number';
+            input.placeholder = 'Enter your Passport number';
+        }
+    }
 </script>
+
+</body>
+</html>
