@@ -1,0 +1,29 @@
+﻿<div class="container mt-5">
+    <div class="card shadow mx-auto" style="max-width: 400px;">
+        <div class="card-body">
+            <h3 class="text-center mb-4">Sign up</h3>
+            
+            <div class="btn-group w-100 mb-3">
+                <input type="radio" class="btn-check" name="userType" id="local" checked>
+                <label class="btn btn-outline-primary" for="local">Local Tourisr</label>
+                
+                <input type="radio" class="btn-check" name="userType" id="tourist">
+                <label class="btn btn-outline-primary" for="tourist">Foreign Tourist</label>
+            </div>
+
+            <form>
+                <input type="text" class="form-control mb-2" placeholder="Fullname">
+                <input type="email" class="form-control mb-2" placeholder="Email">
+                
+                <div id="localFields">
+                    <input type="text" class="form-control mb-2" placeholder="CCCD Number">
+                </div>
+                <div id="touristFields" style="display:none;">
+                    <input type="text" class="form-control mb-2" placeholder="Passport Number">
+                </div>
+
+                <button class="btn btn-primary w-100 mt-3">Create Accoount</button>
+            </form>
+        </div>
+    </div>
+</div>

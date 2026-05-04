@@ -1,6 +1,9 @@
-﻿namespace SaigonRide.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+
+public class StationController : Controller
 {
-    public class StationController
+    public IActionResult Index()
     {
+        return View(); 
     }
 }
