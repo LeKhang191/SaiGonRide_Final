@@ -14,10 +14,7 @@ namespace SaigonRide.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
+        public IActionResult Register() => View();
 
         [HttpPost]
         public IActionResult Register(User user)
@@ -31,6 +28,20 @@ namespace SaigonRide.Controllers
             }
 
             return View(user);
+        }
+
+        [HttpGet]
+        public IActionResult Login() => View();
+
+        [HttpPost]
+        public IActionResult Login(string email, string password)
+        {
+            if (email == "admin@tdtu.edu.vn" && password == "admin123")
+            {
+                return RedirectToAction("Index", "Station");
+            }
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SaigonRide.Data;
+using SaigonRide.Models.Entities;
 using System.Linq;
 
 namespace SaigonRide.Controllers
@@ -13,11 +14,75 @@ namespace SaigonRide.Controllers
             _context = context;
         }
 
-        // Station List
+        // Read
         public IActionResult Index()
         {
             var stations = _context.Stations.ToList();
             return View(stations);
+        }
+
+        // GET
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST
+        [HttpPost]
+        public IActionResult Create(Station station)
+        {
+            // Kiểm tra tên duy nhất (Main Flow - Create)
+            if (_context.Stations.Any(s => s.Name == station.Name))
+            {
+                ModelState.AddModelError("Name", "This station name already exists.");
+                return View(station);
+            }
+
+            station.CurrentInventory = 0;
+            _context.Stations.Add(station);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // Update
+        [HttpGet]
+        public IActionResult Edit(int stationId)
+        {
+            var station = _context.Stations.Find(stationId);
+            if (station == null) return NotFound();
+            return View(station);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Station station)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Update(station);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(station);
+        }
+
+        // Delete 
+        [HttpPost]
+        public IActionResult Delete(int stationId)
+        {
+            var station = _context.Stations.Find(stationId);
+
+            if (station == null) return NotFound();
+
+            if (station.CurrentInventory > 0)
+            {
+                TempData["Error"] = "Cannot delete a station with vehicles. Please transfer them first!";
+                return RedirectToAction("Index");
+            }
+
+            _context.Stations.Remove(station);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }
