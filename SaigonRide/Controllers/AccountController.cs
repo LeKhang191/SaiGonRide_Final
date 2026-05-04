@@ -1,9 +1,36 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SaigonRide.Data;
+using SaigonRide.Models.Entities;
 
-public class AccountController : Controller
+namespace SaigonRide.Controllers
 {
-    public IActionResult Login()
+    public class AccountController : Controller
     {
-        return View();
+        private readonly AppDbContext _context;
+
+        public AccountController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Users.Add(user);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(user);
+        }
     }
 }

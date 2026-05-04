@@ -1,0 +1,47 @@
+﻿<div class="container mt-5">
+    <div class="card shadow mx-auto" style="max-width: 400px;">
+        <div class="card-body">
+            <h3 class="text-center mb-4">Sign up</h3>
+            
+            <div class="btn-group w-100 mb-3">
+                <input type="radio" class="btn-check" name="userType" id="local" checked>
+                <label class="btn btn-outline-primary" for="local">Local Tourist</label>
+                
+                <input type="radio" class="btn-check" name="userType" id="tourist">
+                <label class="btn btn-outline-primary" for="tourist">Foreign Tourist</label>
+            </div>
+
+            <form asp-controller="Account" asp-action="Register" method="post">
+                <input type="text" name="FullName" class="form-control mb-2" placeholder="Fullname" required>
+    
+                <input type="email" name="Email" class="form-control mb-2" placeholder="Email" required>
+
+                <input type="hidden" name="UserType" id="selectedUserType" value="Local">
+
+                <div id="localFields">
+                    <input type="text" name="IdNumber" class="form-control mb-2" placeholder="CCCD Number">
+                </div>
+    
+                <div id="touristFields" style="display:none;">
+                    <input type="text" name="IdNumber" class="form-control mb-2" placeholder="Passport Number">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">Create Account</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('local').addEventListener('change', function() {
+        document.getElementById('localFields').style.display = 'block';
+        document.getElementById('touristFields').style.display = 'none';
+        document.getElementById('selectedUserType').value = 'Local';
+    });
+
+    document.getElementById('tourist').addEventListener('change', function() {
+        document.getElementById('localFields').style.display = 'none';
+        document.getElementById('touristFields').style.display = 'block';
+        document.getElementById('selectedUserType').value = 'Tourist';
+    });
+</script>
