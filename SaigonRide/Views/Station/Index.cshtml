@@ -1,17 +1,46 @@
-﻿<div class="container mt-4">
+﻿@model IEnumerable<SaigonRide.Models.Entities.Station>
+
+<div class="container mt-4">
     <h4>Choose a Station nearby</h4>
     <div class="row">
-        <div class="col-md-6 mb-3">
-            <div class="card border-primary">
-                <div class="card-body">
-                    <h5 class="card-title">Ben Thanh Station</h5>
-                    <p class="card-text text-muted">District 1, TP.HCM</p>
-                    <div class="progress mb-2" style="height: 10px;">
-                        <div class="progress-bar bg-success" style="width: 80%"></div>
+        <div class="container mt-4">
+            <h4 class="mb-4">📍 Choose a Station nearby</h4>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    double percent = (double)item.CurrentInventory / item.MaxCapacity * 100;
+                    string colorClass = item.IsLowInventory ? "danger" : "success";
+                    string borderClass = item.IsLowInventory ? "border-danger bg-light" : "border-primary";
+
+                    <div class="col-md-6 mb-3">
+                        <div class="card @borderClass shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title @(item.IsLowInventory ? "text-danger" : "text-primary")">
+                                    @item.Name
+                                </h5>
+                                <p class="card-text text-muted small">@item.Location</p>
+                        
+                                <div class="progress mb-2" style="height: 10px;">
+                                    <div class="progress-bar bg-@colorClass" role="progressbar" style="width: @percent%"></div>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="@(item.IsLowInventory ? "text-danger fw-bold" : "")">
+                                        @if (item.IsLowInventory)
+                                        {
+                                            <span>⚠️ Warning: Only @item.CurrentInventory left (15% Discount)</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Remain: @item.CurrentInventory/@item.MaxCapacity (@Math.Round(percent, 0)% utilized)</span>
+                                        }
+                                    </small>
+                                    <button class="btn btn-sm btn-@colorClass px-3">Choose Station</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <small>Remain: 40/50 Vehicle (80% utilized)</small>
-                    <button class="btn btn-sm btn-primary float-end">Choose Station</button>
-                </div>
+                }
             </div>
         </div>
 

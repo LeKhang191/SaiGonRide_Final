@@ -1,9 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SaigonRide.Data;
+using System.Linq;
 
-public class StationController : Controller
+namespace SaigonRide.Controllers
 {
-    public IActionResult Index()
+    public class StationController : Controller
     {
-        return View(); 
+        private readonly AppDbContext _context;
+
+        public StationController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        // Station List
+        public IActionResult Index()
+        {
+            var stations = _context.Stations.ToList();
+            return View(stations);
+        }
     }
 }
