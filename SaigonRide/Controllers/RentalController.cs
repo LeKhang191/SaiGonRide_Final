@@ -72,6 +72,21 @@ namespace SaigonRide.Controllers
         }
 
         // UPDATE
+        [HttpGet]
+        public async Task<IActionResult> EndRental(int id)
+        {
+            var rental = await _context.Rentals
+                .Include(r => r.User)
+                .Include(r => r.Vehicle)
+                .Include(r => r.StartStation)
+                .FirstOrDefaultAsync(r => r.RentalId == id);
+
+            if (rental == null) return NotFound();
+
+            ViewBag.Stations = new SelectList(_context.Stations, "StationId", "Name");
+            return View(rental);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EndRental(int rentalId, int endStationId, string paymentMethod)
