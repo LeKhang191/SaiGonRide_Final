@@ -82,9 +82,9 @@ namespace SaigonRide.Controllers
 
         // Delete 
         [HttpPost]
-        public IActionResult Delete(int stationId)
+        public IActionResult Delete(int id)
         {
-            var station = _context.Stations.Find(stationId);
+            var station = _context.Stations.Find(id);
 
             if (station == null) return NotFound();
 
