@@ -22,5 +22,18 @@ namespace SaigonRide.Controllers
 
             return View();
         }
+
+        public IActionResult RevenueReport(DateTime? startDate, DateTime? endDate)
+        {
+            var transactions = _context.Transactions.AsQueryable();
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                transactions = transactions.Where(t => t.PaymentDate >= startDate && t.PaymentDate <= endDate);
+            }
+
+            ViewBag.TotalRevenue = transactions.Sum(t => t.TotalFare);
+            return View(transactions.ToList());
+        }
     }
 }
