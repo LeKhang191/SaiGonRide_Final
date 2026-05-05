@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SaigonRide.Data;
 using SaigonRide.Models.Entities;
+using System.Linq;
 
 namespace SaigonRide.Controllers
 {
@@ -8,10 +9,7 @@ namespace SaigonRide.Controllers
     {
         private readonly AppDbContext _context;
 
-        public AccountController(AppDbContext context)
-        {
-            _context = context;
-        }
+        public AccountController(AppDbContext context) => _context = context;
 
         [HttpGet]
         public IActionResult Register() => View();
@@ -21,19 +19,21 @@ namespace SaigonRide.Controllers
         {
             if (string.IsNullOrEmpty(user.FullName) || string.IsNullOrEmpty(user.Email))
             {
-                ModelState.AddModelError(string.Empty, "Name and Email cannot be empty.");
+                ModelState.AddModelError(string.Empty, "Please fill in your name and email.");
                 return View(user);
             }
 
-            if (ModelState.IsValid)
+            try
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
-
-                return RedirectToAction("Index", "Station");
+                return RedirectToAction("Login", "Account");
             }
-
-            return View(user);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error saving to DB: " + ex.Message);
+                return View(user);
+            }
         }
 
         [HttpGet]
@@ -43,9 +43,11 @@ namespace SaigonRide.Controllers
         public IActionResult Login(string email, string password)
         {
             if (email == "admin@tdtu.edu.vn" && password == "admin123")
-            {
                 return RedirectToAction("Index", "Station");
-            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            if (user != null) return RedirectToAction("Index", "Home");
+
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View();
         }

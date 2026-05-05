@@ -11,7 +11,12 @@
     <title>Register - SaigonRide</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <style>
-        body, html { height: 100%; margin: 0; font-family: 'Segoe UI', sans-serif; }
+        body, html { 
+            height: 100%; 
+            margin: 0; 
+            font-family: 'Segoe UI', sans-serif; 
+        }
+
         .bg-image {
             background-image: url('/images/scooter.jpg');
             background-size: cover; 
@@ -73,6 +78,17 @@
             color: white; 
             border-color: #007bff;
         }
+
+        register-card, .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -85,7 +101,7 @@
         <h2 class="fw-bold mb-2">Create an account</h2>
         <p class="text-muted mb-4 small">Join us to start your journey around the city.</p>
 
-        <form asp-action="Register" method="post">
+            <form asp-controller="Account" asp-action="Register" method="post">
             <div class="mb-3">
                 <label class="form-label">Full Name</label>
                 <input asp-for="FullName" class="form-control form-control-lg" placeholder="Name" required />
@@ -117,7 +133,8 @@
         </form>
 
         <div class="text-center mt-3 small">
-            Already have an account? <a asp-action="Login" class="text-decoration-none fw-bold">Login</a>
+            Already have an account?
+            <a asp-controller="Account" asp-action="Login" class="text-decoration-none fw-bold">Login</a>
         </div>
     </div>
 </div>
