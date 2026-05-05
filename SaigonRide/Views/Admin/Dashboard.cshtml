@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard Overview</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card metric-card bg-primary text-white shadow">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6>Total Vehicles</h6>
+                        <h2>@ViewBag.TotalVehicles</h2>
+                    </div>
+                    <i class="bi bi-bicycle fs-1"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card metric-card bg-success text-white shadow">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6>Active Stations</h6>
+                        <h2>@ViewBag.TotalStations</h2>
+                    </div>
+                    <i class="bi bi-geo-alt fs-1"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card shadow p-4">
+            <h5>Quick Actions</h5>
+            <div class="d-grid gap-2 mt-3">
+                <a asp-controller="Vehicle" asp-action="Create" class="btn btn-outline-primary text-start">
+                    <i class="bi bi-plus-circle me-2"></i> Add New Vehicle (UC-01)
+                </a>
+                <a asp-controller="Station" asp-action="Create" class="btn btn-outline-success text-start">
+                    <i class="bi bi-plus-circle me-2"></i> Create New Station
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
