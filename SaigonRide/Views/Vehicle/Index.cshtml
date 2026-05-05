@@ -1,0 +1,51 @@
+﻿<form method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <select name="status" class="form-select">
+            <option value="">-- All Status --</option>
+            <option value="Available">Available</option>
+            <option value="In Use">In Use</option>
+            <option value="Maintenance">Maintenance</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+    </div>
+</form>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Vehicle No.</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.VehicleNumber</td>
+                <td>
+                    @if (item.Status == "Available")
+                    {
+                        <span class="badge bg-success">Available</span>
+                    }
+                    else if (item.Status == "In Use")
+                    {
+                        <span class="badge bg-primary">In Use</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Maintenance</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.VehicleId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@item.VehicleId" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this vehicle?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
