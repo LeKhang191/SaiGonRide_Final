@@ -55,7 +55,7 @@ namespace SaigonRide.Controllers
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Stations = new SelectList(_context.Stations, "StationId", "Name", vehicle.StationId);
+            ViewBag.Station = new SelectList(_context.Stations, "StationId", "Name", vehicle.StationId);
             return View(vehicle);
         }
 
@@ -66,7 +66,7 @@ namespace SaigonRide.Controllers
             var vehicle = _context.Vehicles.Find(id);
             if (vehicle == null) return NotFound();
 
-            ViewBag.Stations = new SelectList(_context.Stations, "StationId", "Name", vehicle.StationId);
+            ViewBag.StationId = new SelectList(_context.Stations, "StationId", "Name", vehicle.StationId);
             return View(vehicle);
         }
 
@@ -96,24 +96,14 @@ namespace SaigonRide.Controllers
 
         // POST: Vehicle/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             var vehicle = _context.Vehicles.Find(id);
-            if (vehicle == null) return NotFound();
-
-            try
+            if (vehicle != null)
             {
                 _context.Vehicles.Remove(vehicle);
                 _context.SaveChanges();
             }
-            catch (DbUpdateException)
-            {
-                _context.Entry(vehicle).State = EntityState.Unchanged;
-                vehicle.Status = "Inactive";
-                _context.SaveChanges();
-            }
-
             return RedirectToAction(nameof(Index));
         }
     }
