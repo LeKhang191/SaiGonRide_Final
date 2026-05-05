@@ -67,27 +67,40 @@
                         {
                             <div class="col-4">
                                 <input type="radio" class="btn-check" name="paymentMethod" id="momo" value="MoMo" required>
-                                <label class="btn btn-outline-danger w-100" for="momo">MoMo</label>
+                                <label class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center" for="momo" style="height: 50px;">
+                                    <img src="~/images/momo.png" height="25" class="me-2">
+                                    MoMo
+                                </label>
                             </div>
                             <div class="col-4">
                                 <input type="radio" class="btn-check" name="paymentMethod" id="vnpay" value="VNPay">
-                                <label class="btn btn-outline-primary w-100" for="vnpay">VNPay</label>
+                                <label class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center" for="vnpay" style="height: 50px;">
+                                    <img src="~/images/vnpay.png" height="20" class="me-2">
+                                    VNPay
+                                </label>
                             </div>
                         }
                         else
                         {
                             <div class="col-4">
                                 <input type="radio" class="btn-check" name="paymentMethod" id="applepay" value="Apple Pay" required>
-                                <label class="btn btn-outline-dark w-100" for="applepay">Apple Pay</label>
+                                <label class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center" for="applepay" style="height: 50px;">
+                                    <i class="bi bi-apple me-2"></i> Apple Pay
+                                </label>
                             </div>
                             <div class="col-4">
                                 <input type="radio" class="btn-check" name="paymentMethod" id="paypal" value="PayPal">
-                                <label class="btn btn-outline-primary w-100" for="paypal">PayPal</label>
+                                <label class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center" for="paypal" style="height: 50px;">
+                                    <img src="~/images/paypal.png" height="20" class="me-2">
+                                    PayPal
+                                </label>
                             </div>
                         }
                         <div class="col-4">
                             <input type="radio" class="btn-check" name="paymentMethod" id="cash" value="Cash">
-                            <label class="btn btn-outline-success w-100" for="cash">Cash</label>
+                            <label class="btn btn-outline-success w-100 d-flex align-items-center justify-content-center" for="cash" style="height: 50px;">
+                                <span class="me-2">💵</span> Cash
+                            </label>
                         </div>
                     </div>
                 </div>
