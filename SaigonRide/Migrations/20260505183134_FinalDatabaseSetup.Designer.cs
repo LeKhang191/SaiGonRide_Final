@@ -12,8 +12,8 @@ using SaigonRide.Data;
 namespace SaigonRide.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260505162148_SeedInitialData")]
-    partial class SeedInitialData
+    [Migration("20260505183134_FinalDatabaseSetup")]
+    partial class FinalDatabaseSetup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,63 @@ namespace SaigonRide.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("SaigonRide.Models.Entities.Rental", b =>
+                {
+                    b.Property<int>("RentalId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RentalId"));
+
+                    b.Property<double?>("BaseFare")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("DiscountApplied")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("EndStationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("FinalFare")
+                        .HasColumnType("float");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("StartStationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RentalId");
+
+                    b.HasIndex("EndStationId");
+
+                    b.HasIndex("StartStationId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("Rentals");
+                });
 
             modelBuilder.Entity("SaigonRide.Models.Entities.Station", b =>
                 {
@@ -50,16 +107,6 @@ namespace SaigonRide.Migrations
                     b.HasKey("StationId");
 
                     b.ToTable("Stations");
-
-                    b.HasData(
-                        new
-                        {
-                            StationId = 1,
-                            CurrentInventory = 10,
-                            Location = "Bai Sau",
-                            MaxCapacity = 0,
-                            Name = "Vung Tau Food Tour Station"
-                        });
                 });
 
             modelBuilder.Entity("SaigonRide.Models.Entities.Transaction", b =>
@@ -132,7 +179,7 @@ namespace SaigonRide.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Vehicle", b =>
+            modelBuilder.Entity("SaigonRide.Models.Entities.Vehicle", b =>
                 {
                     b.Property<int>("VehicleId")
                         .ValueGeneratedOnAdd()
@@ -160,19 +207,42 @@ namespace SaigonRide.Migrations
                     b.HasIndex("StationId");
 
                     b.ToTable("Vehicles");
-
-                    b.HasData(
-                        new
-                        {
-                            VehicleId = 1,
-                            StationId = 1,
-                            Status = "Available",
-                            Type = "Electric Bike",
-                            VehicleNumber = "72-VungTau-001"
-                        });
                 });
 
-            modelBuilder.Entity("Vehicle", b =>
+            modelBuilder.Entity("SaigonRide.Models.Entities.Rental", b =>
+                {
+                    b.HasOne("SaigonRide.Models.Entities.Station", "EndStation")
+                        .WithMany()
+                        .HasForeignKey("EndStationId");
+
+                    b.HasOne("SaigonRide.Models.Entities.Station", "StartStation")
+                        .WithMany()
+                        .HasForeignKey("StartStationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SaigonRide.Models.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SaigonRide.Models.Entities.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("EndStation");
+
+                    b.Navigation("StartStation");
+
+                    b.Navigation("User");
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("SaigonRide.Models.Entities.Vehicle", b =>
                 {
                     b.HasOne("SaigonRide.Models.Entities.Station", "Station")
                         .WithMany()

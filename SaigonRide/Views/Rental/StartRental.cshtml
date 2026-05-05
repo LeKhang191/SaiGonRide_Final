@@ -1,0 +1,52 @@
+@{
+    ViewData["Title"] = "Start Rental";
+    Layout = "_AdminLayout";
+}
+
+<div class="container py-4" style="max-width: 600px;">
+    <div class="mb-4">
+        <a asp-action="Index" class="text-decoration-none text-muted"><i class="bi bi-arrow-left"></i> Back to Rentals</a>
+        <h2 class="fw-bold mt-2"><i class="bi bi-unlock-fill"></i> Start New Rental</h2>
+        <p class="text-muted">Unlock a vehicle for a user</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <form asp-action="StartRental" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">👤 User</label>
+                    <select name="userId" class="form-select" required asp-items="ViewBag.Users">
+                        <option value="">-- Select User --</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">🛵 Available Vehicle</label>
+                    <select name="vehicleId" class="form-select" required asp-items="ViewBag.Vehicles">
+                        <option value="">-- Select Vehicle --</option>
+                    </select>
+                    <div class="form-text">Only available vehicles are shown</div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">📍 Pickup Station</label>
+                    <select name="startStationId" class="form-select" required asp-items="ViewBag.Stations">
+                        <option value="">-- Select Station --</option>
+                    </select>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>💡 Pricing Info:</strong><br>
+                    🚲 Standard Bike: 500 VND/min<br>
+                    🛵 E-Scooter: 1,500 VND/min
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 shadow">
+                    Start Rental
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

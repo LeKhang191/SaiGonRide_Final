@@ -21,7 +21,7 @@ namespace SaigonRide.Controllers
         // READ
         public async Task<IActionResult> Index()
         {
-            var rentals = await _context.Rental
+            var rentals = await _context.Rentals
                 .Include(r => r.User)
                 .Include(r => r.Vehicle)
                 .Include(r => r.StartStation)
@@ -64,7 +64,7 @@ namespace SaigonRide.Controllers
 
             vehicle.Status = "In-Transit";
 
-            _context.Rental.Add(rental);
+            _context.Rentals.Add(rental);
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Trip started successfully!";
@@ -76,11 +76,17 @@ namespace SaigonRide.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EndRental(int rentalId, int endStationId, string paymentMethod)
         {
-            var rental = await _context.Rental
+            var rental = await _context.Rentals
                 .Include(r => r.Vehicle)
                 .FirstOrDefaultAsync(r => r.RentalId == rentalId && r.Status == "Active");
 
             if (rental == null) return NotFound();
+
+            if (rental.Vehicle == null)
+            {
+                ModelState.AddModelError("", "Data error: Vehicle associated with this rental is missing.");
+                return View(rental);
+            }
 
             DateTime endTime = DateTime.Now;
             var duration = (endTime - rental.StartTime).TotalMinutes;
@@ -94,7 +100,6 @@ namespace SaigonRide.Controllers
             rental.FinalFare = baseFare;
             rental.PaymentMethod = paymentMethod;
             rental.Status = "Completed";
-
             rental.Vehicle.Status = "Available";
 
             await _context.SaveChangesAsync();
@@ -104,7 +109,7 @@ namespace SaigonRide.Controllers
 
         public async Task<IActionResult> Receipt(int id)
         {
-            var rental = await _context.Rental
+            var rental = await _context.Rentals
                 .Include(r => r.User)
                 .Include(r => r.Vehicle)
                 .Include(r => r.StartStation)

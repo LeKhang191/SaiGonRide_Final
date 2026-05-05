@@ -1,0 +1,102 @@
+@model SaigonRide.Models.Entities.Rental
+
+@{
+    ViewData["Title"] = "Rental Receipt";
+    var duration = (int)(Model.EndTime!.Value - Model.StartTime).TotalMinutes;
+}
+
+<div class="container py-4" style="max-width: 500px;">
+
+    <div class="card border-0 shadow" id="receipt-card">
+        <div class="card-header text-center py-4"
+             style="background: linear-gradient(135deg, #1a1a2e, #16213e); color: white;">
+            <div class="fs-1">🛵</div>
+            <h4 class="fw-bold mb-0">SaigonRide</h4>
+            <div class="text-light opacity-75 small">Rental Receipt</div>
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="text-center mb-4">
+                <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center"
+                     style="width:64px; height:64px; font-size:28px;">✓</div>
+                <h5 class="fw-bold mt-2 mb-0">Rental Completed!</h5>
+            </div>
+
+            <table class="table table-borderless table-sm">
+                <tr>
+                    <td class="text-muted">Rental ID</td>
+                    <td class="text-end fw-semibold">#@Model.RentalId</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">User</td>
+                    <td class="text-end">@Model.User?.FullName</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">Vehicle</td>
+                    <td class="text-end">@Model.Vehicle?.VehicleNumber </td>
+                </tr>
+                <tr>
+                    <td class="text-muted">From</td>
+                    <td class="text-end">@Model.StartStation?.Name</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">To</td>
+                    <td class="text-end">@Model.EndStation?.Name</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">Start</td>
+                    <td class="text-end">@Model.StartTime.ToString("HH:mm dd/MM/yyyy")</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">End</td>
+                    <td class="text-end">@Model.EndTime?.ToString("HH:mm dd/MM/yyyy")</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">Duration</td>
+                    <td class="text-end">@duration minutes</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">Payment</td>
+                    <td class="text-end">
+                        <span class="badge bg-secondary">@Model.PaymentMethod</span>
+                    </td>
+                </tr>
+            </table>
+
+            <hr>
+
+            <div class="bg-light rounded p-3 mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="text-muted">Base Fare</span>
+                    <span>@String.Format("{0:N0}", Model.BaseFare) VND</span>
+                </div>
+                @if (Model.DiscountApplied)
+                {
+                    <div class="d-flex justify-content-between mb-1 text-success">
+                        <span>🎁 Rebalancing Discount (15%)</span>
+                        <span>- @String.Format("{0:N0}", Model.BaseFare - Model.FinalFare) VND</span>
+                    </div>
+                    <div class="alert alert-success py-2 px-3 mb-2 small">
+                        ✅ You returned to a low-inventory station. Thanks for helping balance our fleet!
+                    </div>
+                }
+                <hr class="my-2">
+                <div class="d-flex justify-content-between fw-bold fs-5">
+                    <span>Total Paid</span>
+                    <span class="text-success">@String.Format("{0:N0}", Model.FinalFare) VND</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card-footer text-center text-muted small py-3">
+            Thank you for using SaigonRide! 🌿 Ride green, ride smart.
+        </div>
+    </div>
+
+    <div class="text-center mt-3">
+        <a asp-action="Index" class="btn btn-outline-secondary me-2">Back to Rentals</a>
+        <a asp-action="StartRental" class="btn btn-primary">New Rental</a>
+    </div>
+</div>
