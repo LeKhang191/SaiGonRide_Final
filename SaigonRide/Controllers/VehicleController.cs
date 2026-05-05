@@ -66,7 +66,7 @@ namespace SaigonRide.Controllers
             var vehicle = _context.Vehicles.Find(id);
             if (vehicle == null) return NotFound();
 
-            ViewBag.StationId = new SelectList(_context.Stations, "StationId", "Name", vehicle.StationId);
+            ViewBag.Stations = new SelectList(_context.Stations, "StationId", "Name", vehicle.StationId);
             return View(vehicle);
         }
 
