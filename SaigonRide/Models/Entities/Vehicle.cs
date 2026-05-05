@@ -9,5 +9,4 @@ public class Vehicle
     public string Status { get; set; } = "Available";
     public int StationId { get; set; }
     public Station? Station { get; set; }
-    public DbSet<Transaction> Transactions { get; set; }
 }

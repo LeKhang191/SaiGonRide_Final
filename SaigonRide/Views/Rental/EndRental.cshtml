@@ -1,0 +1,38 @@
+﻿@model SaigonRide.Models.Entities.Rental
+@{
+    ViewData["Title"] = "Return Vehicle";
+    Layout = "_AdminLayout";
+}
+
+<div class="container py-4" style="max-width: 600px;">
+    <div class="mb-4">
+        <a asp-action="Index" class="text-decoration-none text-muted">
+            <i class="bi bi-arrow-left"></i> Back to Rentals
+        </a>
+        <h2 class="fw-bold mt-2"><i class="bi bi-flag"></i> Return Vehicle</h2>
+        <p class="text-muted">Complete the rental and calculate fare</p>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <form asp-action="EndRental" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="rentalId" value="@Model.RentalId" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold"><i class="bi bi-geo-alt"></i> Return Station</label>
+                    <select name="endStationId" class="form-select" required asp-items="ViewBag.Stations">
+                        <option value="">-- Select Return Station --</option>
+                    </select>
+                    <div class="form-text text-success">
+                        <i class="bi bi-info-circle"></i> Returning to low-inventory stations earns <strong>15% discount!</strong>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 py-2 fw-bold shadow">
+                    Complete Rental & Pay
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

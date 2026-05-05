@@ -11,5 +11,6 @@ namespace SaigonRide.Data
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Vehicle> Vehicles { get; set; } = null!;
         public DbSet<Transaction> Transactions { get; set; } = null!;
+        public DbSet<Rental> Rental { get; set; } = null!;
     }
 }

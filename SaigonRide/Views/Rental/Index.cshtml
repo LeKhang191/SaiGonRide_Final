@@ -1,19 +1,172 @@
-﻿<div class="container mt-4">
-    <div class="row text-center">
-        <div class="col-6">
-            <div class="card p-3 border-2 shadow-sm">
-                <span style="font-size: 3rem;">🚲</span>
-                <h6>Regular Bicycle</h6>
-                <p class="text-primary fw-bold">500 VND / minute</p>
-                <button class="btn btn-outline-primary">Choose Rental</button>
+﻿@model IEnumerable<SaigonRide.Models.Entities.Rental>
+@{
+    ViewData["Title"] = "Rental Management";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0">🚲 Rental Management</h2>
+            <p class="text-muted mb-0">Manage and monitor all vehicle rentals</p>
+        </div>
+        <a asp-action="StartRental" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-circle me-1"></i> Start New Rental
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm">
+            <i class="bi bi-check-circle me-2"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 bg-primary text-white shadow-sm">
+                <div class="card-body">
+                    <div class="fs-4 fw-bold">@Model.Count()</div>
+                    <div class="small">Total Rentals</div>
+                </div>
             </div>
         </div>
-        <div class="col-6">
-            <div class="card p-3 border-2 shadow-sm">
+        <div class="col-md-3">
+            <div class="card border-0 bg-warning text-dark shadow-sm">
+                <div class="card-body">
+                    <div class="fs-4 fw-bold">@Model.Count(r => r.Status == "Active")</div>
+                    <div class="small">Active Now</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 bg-success text-white shadow-sm">
+                <div class="card-body">
+                    <div class="fs-4 fw-bold">@Model.Count(r => r.Status == "Completed")</div>
+                    <div class="small">Completed</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 bg-info text-white shadow-sm">
+                <div class="card-body">
+                    <div class="fs-4 fw-bold">
+                        @String.Format("{0:N0}", Model.Where(r => r.FinalFare.HasValue).Sum(r => r.FinalFare)) VND
+                    </div>
+                    <div class="small">Total Revenue</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row text-center mb-5 g-3">
+        <div class="col-md-6">
+            <div class="card p-3 border-0 shadow-sm">
+                <span style="font-size: 3rem;">🚲</span>
+                <h6 class="fw-bold">Standard Bicycle</h6>
+                <p class="text-primary fw-bold mb-0">500 VND / minute</p>
+                <small class="text-muted mb-3">Eco-friendly and healthy</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-3 border-0 shadow-sm">
                 <span style="font-size: 3rem;">🛴</span>
-                <h6>E-Scooter</h6>
-                <p class="text-primary fw-bold">1,500 VND / minute</p>
-                <button class="btn btn-outline-primary">Choose Rental</button>
+                <h6 class="fw-bold">E-Scooter</h6>
+                <p class="text-primary fw-bold mb-0">1,500 VND / minute</p>
+                <small class="text-muted mb-3">Fast and effortless</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-bottom py-3">
+            <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i>Recent Transactions</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#ID</th>
+                            <th>User</th>
+                            <th>Vehicle</th>
+                            <th>From → To</th>
+                            <th>Start Time</th>
+                            <th>Duration</th>
+                            <th>Fare (VND)</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var rental in Model)
+                        {
+                            <tr>
+                                <td><span class="fw-bold">#@rental.RentalId</span></td>
+                                <td>@rental.User?.FullName</td>
+                                <td>@rental.Vehicle?.VehicleNumber</td>
+                                <td>
+                                    <span class="badge bg-secondary">@rental.StartStation?.Name</span>
+                                    @if (rental.EndStation != null)
+                                    {
+                                        <span class="mx-1">→</span>
+                                        <span class="badge bg-primary">@rental.EndStation.Name</span>
+                                    }
+                                </td>
+                                <td>@rental.StartTime.ToString("dd/MM HH:mm")</td>
+                                <td>
+                                    @if (rental.EndTime.HasValue)
+                                    {
+                                        var dur = (int)(rental.EndTime.Value - rental.StartTime).TotalMinutes;
+                                        <span>@dur min</span>
+                                    }
+                                    else
+                                    {
+                                        var dur = (int)(DateTime.Now - rental.StartTime).TotalMinutes;
+                                        <span class="text-warning">@dur min (active)</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (rental.FinalFare.HasValue)
+                                    {
+                                        <span class="fw-bold">@String.Format("{0:N0}", rental.FinalFare)</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">-</span>
+                                    }
+                                </td>
+                                <td>
+                                    @{
+                                        var badgeClass = rental.Status switch
+                                        {
+                                            "Active" => "bg-warning text-dark",
+                                            "Completed" => "bg-success",
+                                            _ => "bg-secondary"
+                                        };
+                                    }
+                                    <span class="badge @badgeClass">@rental.Status</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        @if (rental.Status == "Active")
+                                        {
+                                            <a asp-action="EndRental" asp-route-id="@rental.RentalId"
+                                                   class="btn btn-outline-success">
+                                                <i class="bi bi-flag-fill"></i>
+                                            </a>
+                                        }
+                                        <a asp-action="Delete" asp-route-id="@rental.RentalId"
+                                               class="btn btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
