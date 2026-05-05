@@ -19,12 +19,18 @@ namespace SaigonRide.Controllers
         [HttpPost]
         public IActionResult Register(User user)
         {
+            if (string.IsNullOrEmpty(user.FullName) || string.IsNullOrEmpty(user.Email))
+            {
+                ModelState.AddModelError(string.Empty, "Name and Email cannot be empty.");
+                return View(user);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Station");
             }
 
             return View(user);
