@@ -3,9 +3,9 @@
 public class Vehicle
 {
     public int VehicleId { get; set; }
-    public string VehicleNumber { get; set; }
-    public string Type { get; set; }
-    public string Status { get; set; }
+    public string VehicleNumber { get; set; } = string.Empty;
+    public string Type { get; set; } = string.Empty;
+    public string Status { get; set; } = "Available";
     public int StationId { get; set; }
     public Station? Station { get; set; }
 }
