@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SaigonRide.Data;
 using SaigonRide.Models.Entities;
 using System.Linq;
@@ -32,7 +33,6 @@ namespace SaigonRide.Controllers
         [HttpPost]
         public IActionResult Create(Station station)
         {
-            // Kiểm tra tên duy nhất (Main Flow - Create)
             if (_context.Stations.Any(s => s.Name == station.Name))
             {
                 ModelState.AddModelError("Name", "This station name already exists.");
@@ -47,21 +47,35 @@ namespace SaigonRide.Controllers
 
         // Update
         [HttpGet]
-        public IActionResult Edit(int stationId)
+        public IActionResult Edit(int id)
         {
-            var station = _context.Stations.Find(stationId);
+            var station = _context.Stations.Find(id);
             if (station == null) return NotFound();
             return View(station);
         }
 
         [HttpPost]
-        public IActionResult Edit(Station station)
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Station station)
         {
+            if (id != station.StationId)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Update(station);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    _context.Update(station);
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!StationExists(station.StationId)) return NotFound();
+                    else throw;
+                }
+                return RedirectToAction(nameof(Index));
             }
             return View(station);
         }
@@ -84,5 +98,11 @@ namespace SaigonRide.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        private bool StationExists(int id)
+        {
+            return _context.Stations.Any(e => e.StationId == id);
+        }
     }
 }
+

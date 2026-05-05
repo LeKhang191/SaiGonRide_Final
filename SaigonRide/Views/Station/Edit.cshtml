@@ -27,10 +27,10 @@
                         <input asp-for="MaxCapacity" type="number" class="form-control" min="1" required />
                         <span asp-validation-for="MaxCapacity" class="text-danger"></span>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="CurrentInventory" class="form-label fw-bold">Current Inventory</label>
-                        <input asp-for="CurrentInventory" type="number" class="form-control" readonly />
-                        <div class="form-text text-muted">Read-only (Managed by system)</div>
+                    <div class="form-group mb-3">
+                        <label asp-for="CurrentInventory" class="control-label">Number of Vehicles left</label>
+                        <input asp-for="CurrentInventory" type="number" class="form-control" min="0" />
+                        <span asp-validation-for="CurrentInventory" class="text-danger"></span>
                     </div>
                 </div>
 
