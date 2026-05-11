@@ -27,23 +27,24 @@
         }
 
         .register-card {
-            background: white; 
-            padding: 40px; 
+            background: var(--bg-card);
+            padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
-            width: 100%; max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
         }
 
         .btn-next {
-            background-color: #2D2D2D; 
-            color: white; 
+            background-color: var(--pure-black);
+            color: var(--bg-page);
             border-radius: 25px;
-            padding: 12px; 
-            font-weight: bold; 
-            border: none; 
-            width: 100%; 
-            margin-top: 1rem;
+            padding: 12px;
+            font-weight: bold;
+            border: none;
+            width: 100%;
         }
+
 
         .btn-next:hover { 
             background-color: #000;
@@ -63,20 +64,22 @@
         }
 
         .user-type-btn {
-            flex: 1; 
+            flex: 1;
             padding: 10px; 
-            border: 1px solid #ddd; 
+            border: 1px solid var(--pure-black); 
             border-radius: 10px;
-            background: white; 
+            background: transparent; 
+            color: var(--pure-black);
             cursor: pointer; 
             text-align: center; 
             transition: 0.3s;
+            font-weight: 600;
         }
 
         .user-type-btn.active {
-            background: #007bff; 
-            color: white; 
-            border-color: #007bff;
+            background: var(--pure-black); 
+            color: var(--bg-page); 
+            border-color: var(--pure-black);
         }
 
         register-card, .login-card {

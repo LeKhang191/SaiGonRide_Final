@@ -1,3 +1,9 @@
+:root {
+    --bg-page: #F5F2E8;
+    --bg-card: #E8E4D8;
+    --pure-black: #000000;
+}
+
 html {
   font-size: 14px;
 }
@@ -28,12 +34,6 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
-}
-
-:root {
-    --bg-page: #F5F2E8;
-    --bg-card: #E8E4D8;
-    --pure-black: #000000;
 }
 
 body {
