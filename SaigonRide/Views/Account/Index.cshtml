@@ -6,25 +6,26 @@
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold"><i class="bi bi-people-fill text-primary"></i> User Directory</h2>
+        <h2 class="fw-bold"><i class="bi bi-person-fill"></i> User Directory</h2>
         <span class="badge bg-info text-dark">Total: @Model.Count() Members</span>
     </div>
 
-    <div class="card shadow-sm">
+    <div class="card shadow-sm border-0" style="border-radius: 10px; overflow: hidden;">
         <div class="card-body p-0">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
+            <table class="table table-hover mb-0" style="border-collapse: collapse;">
+                <thead class="table-dark">
                     <tr>
-                        <th class="ps-4">Full Name</th>
-                        <th>Email</th>
-                        <th>User Type</th>
-                        <th class="pe-4">ID Number</th>
+                        <th class="ps-4 py-3">Full Name</th>
+                        <th class="py-3">Email</th>
+                        <th class="py-3">User Type</th>
+                        <th class="py-3">ID Number</th>
+                        <th class="pe-4 text-end py-3">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var user in Model)
                     {
-                        <tr>
+                        <tr class="align-middle" style="background-color: #E8E4D8;">
                             <td class="ps-4 fw-bold">@user.FullName</td>
                             <td>@user.Email</td>
                             <td>
@@ -32,11 +33,12 @@
                                     @user.UserType
                                 </span>
                             </td>
-                            <td class="pe-4">@user.IdNumber</td>
-                            <td>
+                            <td>@user.IdNumber</td>
+                            <td class="pe-4 text-end">
                                 <form asp-controller="Account" asp-action="Delete" asp-route-id="@user.UserId" method="post"
-                                      onsubmit="return confirm('Are you sure you want to delete the user @user.FullName?');">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                      onsubmit="return confirm('Are you sure you want to delete the user @user.FullName?');"
+                                      class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" style="border-radius: 5px;">
                                         <i class="bi bi-trash"></i> Delete
                                     </button>
                                 </form>

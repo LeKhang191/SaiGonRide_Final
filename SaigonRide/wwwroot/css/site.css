@@ -44,7 +44,7 @@ body {
 .card {
     background-color: var(--bg-card) !important;
     border: 1px solid rgba(0,0,0,0.1) !important;
-    border-radius: 20px !important;
+    border-radius: 5px !important;
     transition: all 0.3s ease;
 }
 
@@ -60,7 +60,7 @@ body {
 .btn-primary {
     background-color: var(--pure-black) !important;
     color: var(--bg-page) !important;
-    border-radius: 50px !important;
+    border-radius: 5px !important;
     border: none;
     font-weight: 600;
 }
@@ -99,7 +99,7 @@ body {
     background-color: #000 !important;
     color: #F5F2E8 !important;
     border: none !important;
-    border-radius: 50px !important;
+    border-radius: 5px !important;
 }
 
 i, .bi {
@@ -124,6 +124,6 @@ label {
     background-color: #000 !important;
     color: #F5F2E8 !important;
     border: none !important;
-    border-radius: 50px !important;
+    border-radius: 5px !important;
     padding: 10px 25px !important;
 }
