@@ -196,6 +196,14 @@ namespace SaigonRide.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult PaymentCancel()
+        {
+            TempData["Error"] = "Payment was canceled. You can try again.";
+
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> Receipt(int id)
         {
             var rental = await _context.Rentals
