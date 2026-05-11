@@ -3,52 +3,61 @@
     Layout = "_AdminLayout";
 }
 
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Dashboard Overview</h1>
-</div>
+<div class="container-fluid py-4" style="background-color: #F5F2E8; min-height: 100vh;">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom border-dark">
+        <h1 class="h2 fw-bold text-dark text-uppercase">📊 Dashboard Overview</h1>
+    </div>
 
-<div class="row">
-    <div class="col-md-3 mb-4">
-        <div class="card metric-card bg-primary text-white shadow">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h6>Total Vehicles</h6>
-                        <h2>@ViewBag.TotalVehicles</h2>
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-dark h-100" style="background-color: #E8E4D8; border-radius: 15px;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase fw-bold text-dark mb-1" style="font-size: 0.75rem;">Total Vehicles</h6>
+                            <h2 class="fw-bold text-dark mb-0">@ViewBag.TotalVehicles</h2>
+                        </div>
+                        <i class="bi bi-bicycle fs-1 text-dark"></i>
                     </div>
-                    <i class="bi bi-bicycle fs-1"></i>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-3 mb-4">
-        <div class="card metric-card bg-success text-white shadow">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h6>Active Stations</h6>
-                        <h2>@ViewBag.TotalStations</h2>
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-dark h-100" style="background-color: #E8E4D8; border-radius: 15px;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase fw-bold text-dark mb-1" style="font-size: 0.75rem;">Active Stations</h6>
+                            <h2 class="fw-bold text-dark mb-0">@ViewBag.TotalStations</h2>
+                        </div>
+                        <i class="bi bi-geo-alt fs-1 text-dark"></i>
                     </div>
-                    <i class="bi bi-geo-alt fs-1"></i>
                 </div>
             </div>
         </div>
+        
     </div>
 
-</div>
-
-<div class="row mt-4">
-    <div class="col-md-6">
-        <div class="card shadow p-4">
-            <h5>Quick Actions</h5>
-            <div class="d-grid gap-2 mt-3">
-                <a asp-controller="Vehicle" asp-action="Create" class="btn btn-outline-primary text-start">
-                    <i class="bi bi-plus-circle me-2"></i> Add New Vehicle
-                </a>
-                <a asp-controller="Station" asp-action="Create" class="btn btn-outline-success text-start">
-                    <i class="bi bi-plus-circle me-2"></i> Create New Station
-                </a>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 p-4" style="background-color: #E8E4D8; border-radius: 20px;">
+                <h5 class="fw-bold text-dark text-uppercase mb-4">Quick Actions</h5>
+                <div class="d-grid gap-3">
+                    <a asp-controller="Vehicle" asp-action="Create" class="btn btn-dark text-start py-3 px-4 shadow-sm" style="border-radius: 50px;">
+                        <i class="bi bi-plus-circle me-2"></i> Add New Vehicle
+                    </a>
+                    <a asp-controller="Station" asp-action="Create" class="btn btn-outline-dark text-start py-3 px-4 shadow-sm" style="border-radius: 50px; border-width: 2px;">
+                        <i class="bi bi-plus-circle me-2"></i> Create New Station
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card shadow-sm border-dark p-4 h-100 d-flex flex-column justify-content-center text-center" style="background-color: #000; border-radius: 20px;">
+                <h4 class="text-white fw-bold mb-2 text-uppercase">Saigon Ride System</h4>
+                <p class="text-white-50 small mb-0">A minimalist urban bicycle management system.</p>
             </div>
         </div>
     </div>
