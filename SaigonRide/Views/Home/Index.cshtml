@@ -24,6 +24,7 @@
         width: 100%;
         height: 250px;
         perspective: 1000px;
+        cursor: pointer;
     }
 
     .flip-card-inner {
@@ -35,15 +36,12 @@
         box-shadow: 10px 10px 0px #000;
     }
 
-    .flip-card.flipped .flip-card-inner {
-        transform: rotateY(180deg);
-    }
-
     .flip-card-front, .flip-card-back {
         position: absolute;
         width: 100%;
         height: 100%;
         backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
         border: 1px solid #000;
     }
 
@@ -62,25 +60,10 @@
         justify-content: center;
         padding: 20px;
         text-align: center;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        border: 1px solid #000;
     }
 
-    .flip-card {
-        background-color: transparent;
-        width: 100%;
-        height: 250px;
-        perspective: 1000px;
-        transition: transform 0.1s ease-out;
-        will-change: transform;
-    }
-
-    .flip-card-inner {
-        pointer-events: none;
+    .flip-card.flipped .flip-card-inner {
+        transform: rotateY(180deg);
     }
 </style>
 
@@ -91,43 +74,42 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4 align-items-stretch">
-        
         <div class="col">
-            <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border-radius: 5px !important; border: 1px solid rgba(0,0,0,0.1);">
+            <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid rgba(0,0,0,0.1);">
                 <div class="text-center mb-3">
                     <img src="~/images/station.png" alt="Station Icon" style="height: 60px; width: auto; filter: brightness(0);" />
                 </div>
                 <h4 class="fw-bold text-center text-dark text-uppercase">STATION & USER</h4>
                 <p class="text-center text-dark small px-2">Manage the network of base stations and the system's customer list.</p>
                 <div class="d-grid gap-2 mt-auto">
-                    <a href="/Station" class="btn btn-dark" style="border-radius: 5px !important;">Manage Stations</a>
-                    <a href="/Account" class="btn btn-dark" style="border-radius: 5px !important;">User Directory</a>
+                    <a href="/Station" class="btn btn-dark">Manage Stations</a>
+                    <a href="/Account" class="btn btn-dark">User Directory</a>
                 </div>
             </div>
         </div>
 
         <div class="col">
-            <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border-radius: 5px !important; border: 1px solid rgba(0,0,0,0.1);">
+            <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid rgba(0,0,0,0.1);">
                 <div class="text-center mb-3">
                     <img src="~/images/escooter.png" alt="Fleet Icon" style="height: 60px; width: auto; filter: brightness(0);" />
                 </div>
                 <h4 class="fw-bold text-center text-dark text-uppercase">FLEET</h4>
-                <p class="text-center text-dark small px-2">Complete vehicle inspection, maintenance status, and classification of bicycles/E-Scooter.</p>
+                <p class="text-center text-dark small px-2">Complete vehicle inspection and maintenance status.</p>
                 <div class="d-grid mt-auto">
-                    <a href="/Vehicle" class="btn btn-dark" style="border-radius: 5px !important;">Vehicle Management</a>
+                    <a href="/Vehicle" class="btn btn-dark">Vehicle Management</a>
                 </div>
             </div>
         </div>
 
         <div class="col">
-            <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border-radius: 5px !important; border: 1px solid rgba(0,0,0,0.1);">
+            <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid rgba(0,0,0,0.1);">
                 <div class="text-center mb-3">
                     <img src="~/images/payment.png" alt="Payment Icon" style="height: 60px; width: auto; filter: brightness(0);" />
                 </div>
                 <h4 class="fw-bold text-center text-dark text-uppercase">RENTAL & PAYMENT</h4>
-                <p class="text-center text-dark small px-2">Operate automated car rental, return, and invoice processing systems.</p>
+                <p class="text-center text-dark small px-2">Operate automated rental and invoice processing.</p>
                 <div class="d-grid mt-auto">
-                    <a href="/Rental" class="btn btn-dark" style="border-radius: 5px !important;">Rental Operations</a>
+                    <a href="/Rental" class="btn btn-dark">Rental Operations</a>
                 </div>
             </div>
         </div>
@@ -140,52 +122,32 @@
                     <div class="col-6">
                         <div class="flip-card" id="card1">
                             <div class="flip-card-inner">
-                                <div class="flip-card-front">
-                                    <img src="~/images/scooterbg.jpg" alt="Fleet">
-                                </div>
-                                <div class="flip-card-back">
-                                    <h6 class="fw-bold">SMART FLEET</h6>
-                                    <p class="small">Integrated E-Scooters & Bicycles ecosystem.</p>
-                                </div>
+                                <div class="flip-card-front"><img src="~/images/scooterbg.jpg" alt="Fleet"></div>
+                                <div class="flip-card-back"><h6 class="fw-bold">SMART FLEET</h6><p class="small">E-Scooter ecosystem.</p></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="flip-card" id="card2">
                             <div class="flip-card-inner">
-                                <div class="flip-card-front">
-                                    <img src="~/images/e1.jpg" alt="Station">
-                                </div>
-                                <div class="flip-card-back">
-                                    <h6 class="fw-bold">STATION NETWORK</h6>
-                                    <p class="small">Strategically located across HCM City.</p>
-                                </div>
+                                <div class="flip-card-front"><img src="~/images/e1.jpg" alt="Station"></div>
+                                <div class="flip-card-back"><h6 class="fw-bold">NETWORK</h6><p class="small">Strategically located.</p></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="flip-card" id="card3">
                             <div class="flip-card-inner">
-                                <div class="flip-card-front">
-                                    <img src="~/images/e2.jpg" alt="Payment">
-                                </div>
-                                <div class="flip-card-back">
-                                    <h6 class="fw-bold">GLOBAL PAY</h6>
-                                    <p class="small">Supporting PayPal & International Gateways.</p>
-                                </div>
+                                <div class="flip-card-front"><img src="~/images/e2.jpg" alt="Payment"></div>
+                                <div class="flip-card-back"><h6 class="fw-bold">GLOBAL PAY</h6><p class="small">PayPal supported.</p></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="flip-card" id="card4">
                             <div class="flip-card-inner">
-                                <div class="flip-card-front">
-                                    <img src="~/images/e3.jpg" alt="Eco">
-                                </div>
-                                <div class="flip-card-back">
-                                    <h6 class="fw-bold">ECO IMPACT</h6>
-                                    <p class="small">Reducing urban carbon footprint daily.</p>
-                                </div>
+                                <div class="flip-card-front"><img src="~/images/e3.jpg" alt="Eco"></div>
+                                <div class="flip-card-back"><h6 class="fw-bold">ECO IMPACT</h6><p class="small">Green mobility.</p></div>
                             </div>
                         </div>
                     </div>
@@ -195,10 +157,9 @@
             <div class="col-md-5 ps-md-5 mt-4 mt-md-0">
                 <h6 class="text-uppercase fw-bold text-muted mb-2">Our Mission</h6>
                 <h2 class="fw-bold text-dark mb-4">REDEFINING URBAN TRANSIT</h2>
-                <p class="text-dark">SaigonRide provides a seamless micro-mobility ecosystem designed for the modern rhythm of Ho Chi Minh City.</p>
-                <p class="text-dark">By bridging the gap between local commuters and international travelers, we deliver a unified rental experience with real-time balancing.</p>
+                <p class="text-dark">SaigonRide provides a seamless micro-mobility ecosystem designed for modern rhythms.</p>
                 <div class="mt-4">
-                    <button class="btn btn-dark px-4 py-2" onclick="flipAllCards()">FLIP</button>
+                    <button class="btn btn-dark px-4 py-2" onclick="flipAllCards()">FLIP ALL</button>
                 </div>
             </div>
         </div>
@@ -208,64 +169,62 @@
 @section Scripts {
     <script>
         function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
+            const reveals = document.querySelectorAll(".reveal");
+            const windowHeight = window.innerHeight;
+
+            reveals.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
                 if (elementTop < windowHeight - 150) {
-                    reveals[i].classList.add("active");
-                
-                    setTimeout(() => { document.getElementById("card1").classList.add("flipped"); }, 800);
-                    setTimeout(() => { document.getElementById("card2").classList.add("flipped"); }, 1000);
-                    setTimeout(() => { document.getElementById("card3").classList.add("flipped"); }, 1200);
-                    setTimeout(() => { document.getElementById("card4").classList.add("flipped"); }, 1400);
+                    element.classList.add("active");
+                    
+                    ["card1", "card2", "card3", "card4"].forEach((id, index) => {
+                        setTimeout(() => {
+                            const card = document.getElementById(id);
+                            if (card) card.classList.add("flipped");
+                        }, 800 + (index * 200));
+                    });
                 }
-            }
+            });
         }
 
         function flipAllCards() {
             for(let i = 1; i <= 4; i++) {
-                document.getElementById("card" + i).classList.toggle("flipped");
+                const card = document.getElementById("card" + i);
+                if (card) card.classList.toggle("flipped");
             }
         }
 
         const cards = document.querySelectorAll('.flip-card');
 
         cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const cardRect = card.getBoundingClientRect();
-                const x = e.clientX - cardRect.left;
-                const y = e.clientY - cardRect.top;
-            
-                const middleX = cardRect.width / 2;
-                const middleY = cardRect.height / 2;
+            const inner = card.querySelector('.flip-card-inner');
 
-                const rotateX = ((y - middleY) / middleY) * -15;
-                const rotateY = ((x - middleX) / middleX) * 15;
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
 
                 const isFlipped = card.classList.contains('flipped');
                 const finalRotateY = isFlipped ? (rotateY + 180) : rotateY;
 
-                const inner = card.querySelector('.flip-card-inner');
+                inner.style.transition = "none";
                 inner.style.transform = `rotateX(${rotateX}deg) rotateY(${finalRotateY}deg) scale(1.05)`;
             });
 
             card.addEventListener('mouseleave', () => {
-                const inner = card.querySelector('.flip-card-inner');
+                inner.style.transition = "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
                 const isFlipped = card.classList.contains('flipped');
-            
-                inner.style.transition = "transform 0.5s ease";
                 inner.style.transform = isFlipped ? "rotateY(180deg)" : "rotateX(0deg) rotateY(0deg)";
-            });
-
-            card.addEventListener('mouseenter', () => {
-                const inner = card.querySelector('.flip-card-inner');
-                inner.style.transition = "none";
             });
         });
 
         window.addEventListener("scroll", reveal);
-        reveal();
+        window.addEventListener("load", reveal);
     </script>
 }
-</div>
