@@ -1,21 +1,24 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaigonRide.Data;
 using SaigonRide.Models.Entities;
+using SaigonRide.Services;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SaigonRide.Controllers
 {
     public class RentalController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IVnPayService _vnPayService;
 
-        public RentalController(AppDbContext context)
+        public RentalController(AppDbContext context, IVnPayService vnPayService)
         {
             _context = context;
+            _vnPayService = vnPayService;
         }
 
         // READ
@@ -97,15 +100,8 @@ namespace SaigonRide.Controllers
 
             if (rental == null) return NotFound();
 
-            if (rental.Vehicle == null)
-            {
-                ModelState.AddModelError("", "Data error: Vehicle associated with this rental is missing.");
-                return View(rental);
-            }
-
             DateTime endTime = DateTime.Now;
             var duration = (endTime - rental.StartTime).TotalMinutes;
-
             double rate = (rental.Vehicle?.Type == "Electric Bike") ? 1500 : 500;
             double baseFare = Math.Max(1, duration) * rate;
 
@@ -114,12 +110,44 @@ namespace SaigonRide.Controllers
             rental.BaseFare = baseFare;
             rental.FinalFare = baseFare;
             rental.PaymentMethod = paymentMethod;
-            rental.Status = "Completed";
             rental.Vehicle.Status = "Available";
 
             await _context.SaveChangesAsync();
 
+            if (paymentMethod == "VNPay")
+            {
+                var paymentUrl = _vnPayService.CreatePaymentUrl(HttpContext, rental.RentalId, baseFare);
+                return Redirect(paymentUrl);
+            }
+
+            rental.Status = "Completed";
+            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Receipt), new { id = rental.RentalId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PaymentCallback()
+        {
+            var response = _vnPayService.PaymentExecute(Request.Query);
+
+            if (response == null || response.VnPayResponseCode != "00")
+            {
+                TempData["Error"] = "Payment failed or was canceled.";
+                return RedirectToAction("Index");
+            }
+
+            var rentalId = int.Parse(response.OrderId);
+            var rental = await _context.Rentals.FindAsync(rentalId);
+
+            if (rental != null)
+            {
+                rental.Status = "Completed";
+                await _context.SaveChangesAsync();
+            }
+
+            TempData["Success"] = "Payment via VNPay successful!";
+            return RedirectToAction("Receipt", new { id = rentalId });
         }
 
         public async Task<IActionResult> Receipt(int id)

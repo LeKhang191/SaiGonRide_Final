@@ -1,6 +1,6 @@
 ﻿namespace SaigonRide.Services
 {
-    public class PricingService
+    public interface IMomoService
     {
     }
 }

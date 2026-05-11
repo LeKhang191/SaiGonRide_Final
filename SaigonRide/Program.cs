@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SaigonRide.Data;
 using SaigonRide.Models.Entities;
+using SaigonRide.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // MVS service
 builder.Services.AddControllersWithViews();
+
+// Payment services
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 var app = builder.Build();
 
