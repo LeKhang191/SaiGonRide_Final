@@ -207,7 +207,6 @@
 
 @section Scripts {
     <script>
-        // 1. Logic Reveal & Flip tự động khi scroll
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
@@ -224,14 +223,12 @@
             }
         }
 
-        // 2. Logic nhấn nút lật tay
         function flipAllCards() {
             for(let i = 1; i <= 4; i++) {
                 document.getElementById("card" + i).classList.toggle("flipped");
             }
         }
 
-        // 3. FIX LỖI NGƯỢC CHỮ: Hiệu ứng nghiêng 3D kết hợp Flip
         const cards = document.querySelectorAll('.flip-card');
 
         cards.forEach(card => {
