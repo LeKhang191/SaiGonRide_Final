@@ -54,24 +54,41 @@
                         bool isTourist = Model.User?.UserType == "Tourist";
                     }
                     <div class="row g-2">
-                        @if (!isTourist)
+                        @if (Model.User?.UserType == "Tourist")
+                        {
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="paymentMethod" id="paypal" value="PayPal" required>
+                                <label class="btn btn-outline-dark w-100 py-3 shadow-sm" for="paypal" style="border-radius: 15px; background-color: #F5F2E8;">
+                                    <img src="~/images/paypal.png" height="20" class="me-2"> PayPal
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="paymentMethod" id="applepay" value="ApplePay">
+                                <label class="btn btn-outline-dark w-100 py-3 shadow-sm" for="applepay" style="border-radius: 15px; background-color: #F5F2E8;">
+                                    <i class="bi bi-apple me-2"></i> Apple Pay
+                                </label>
+                            </div>
+                        }
+                        else
                         {
                             <div class="col-6">
                                 <input type="radio" class="btn-check" name="paymentMethod" id="momo" value="MoMo" required>
-                                <label class="btn btn-outline-dark w-100 py-3" for="momo" style="border-radius: 15px; background-color: #F5F2E8;">
+                                <label class="btn btn-outline-dark w-100 py-3 shadow-sm" for="momo" style="border-radius: 15px; background-color: #F5F2E8;">
                                     <img src="~/images/momo.png" height="20" class="me-2"> MoMo
                                 </label>
                             </div>
                             <div class="col-6">
                                 <input type="radio" class="btn-check" name="paymentMethod" id="vnpay" value="VNPay">
-                                <label class="btn btn-outline-dark w-100 py-3" for="vnpay" style="border-radius: 15px; background-color: #F5F2E8;">
-                                    <img src="~/images/vnpay.png" height="18" class="me-2"> VNPay
+                                <label class="btn btn-outline-dark w-100 py-2 d-flex flex-column align-items-center justify-content-center shadow-sm" for="vnpay" style="border-radius: 15px; background-color: #F5F2E8; height: 58px;">
+                                    <img src="~/images/vnpay.png" height="18" alt="VNPay">
+                                    <span style="font-size: 0.7rem;" class="mt-1">VNPay</span>
                                 </label>
                             </div>
                         }
+    
                         <div class="col-12 mt-2">
                             <input type="radio" class="btn-check" name="paymentMethod" id="cash" value="Cash">
-                            <label class="btn btn-outline-dark w-100 py-2" for="cash" style="border-radius: 15px; background-color: #F5F2E8;">
+                            <label class="btn btn-outline-dark w-100 py-2 shadow-sm" for="cash" style="border-radius: 15px; background-color: #F5F2E8;">
                                 💵 Cash Payment
                             </label>
                         </div>

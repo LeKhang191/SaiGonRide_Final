@@ -14,11 +14,13 @@ namespace SaigonRide.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IVnPayService _vnPayService;
+        private readonly IPayPalService _payPalService;
 
-        public RentalController(AppDbContext context, IVnPayService vnPayService)
+        public RentalController(AppDbContext context, IVnPayService vnPayService, IPayPalService payPalService)
         {
             _context = context;
             _vnPayService = vnPayService;
+            _payPalService = payPalService;
         }
 
         // READ
@@ -119,6 +121,16 @@ namespace SaigonRide.Controllers
                 var paymentUrl = _vnPayService.CreatePaymentUrl(HttpContext, rental.RentalId, baseFare);
                 return Redirect(paymentUrl);
             }
+            else if (paymentMethod == "PayPal")
+            {
+                double usdAmount = Math.Round(baseFare / 25400, 2);
+                var url = await _payPalService.CreatePaymentUrl(rental.RentalId, usdAmount);
+
+                if (!string.IsNullOrEmpty(url))
+                {
+                    return Redirect(url);
+                }
+            }
 
             rental.Status = "Completed";
             await _context.SaveChangesAsync();
@@ -148,6 +160,40 @@ namespace SaigonRide.Controllers
 
             TempData["Success"] = "Payment via VNPay successful!";
             return RedirectToAction("Receipt", new { id = rentalId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PaymentWithPayPal(int rentalId)
+        {
+            var rental = await _context.Rentals.FindAsync(rentalId);
+            if (rental == null) return NotFound();
+
+            double usdAmount = Math.Round((double)rental.FinalFare / 25400, 2);
+
+            var url = await _payPalService.CreatePaymentUrl(rentalId, usdAmount);
+            return Redirect(url);
+        }
+
+
+        public async Task<IActionResult> PayPalCallback(string paymentId, string payerId, string token)
+        {
+            var result = await _payPalService.ExecutePayment(paymentId, payerId);
+
+            if (result)
+            {
+                var rental = await _context.Rentals.OrderByDescending(r => r.EndTime).FirstOrDefaultAsync();
+
+                if (rental != null)
+                {
+                    rental.Status = "Completed";
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "PayPal payment successful!";
+                    return RedirectToAction("Receipt", new { id = rental.RentalId });
+                }
+            }
+
+            TempData["Error"] = "PayPal payment failed!";
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Receipt(int id)

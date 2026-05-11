@@ -15,6 +15,7 @@ builder.Services.AddControllersWithViews();
 
 // Payment services
 builder.Services.AddScoped<IVnPayService, VnPayService>();
+builder.Services.AddScoped<IPayPalService, PayPalService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
