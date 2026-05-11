@@ -59,6 +59,22 @@ namespace SaigonRide.Controllers
             return View(users);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return NotFound();
+
+            var userRentals = _context.Rentals.Where(r => r.UserId == id);
+            _context.Rentals.RemoveRange(userRentals);
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         public IActionResult Logout()
         {

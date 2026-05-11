@@ -33,6 +33,14 @@
                                 </span>
                             </td>
                             <td class="pe-4">@user.IdNumber</td>
+                            <td>
+                                <form asp-controller="Account" asp-action="Delete" asp-route-id="@user.UserId" method="post"
+                                      onsubmit="return confirm('Are you sure you want to delete the user @user.FullName?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     }
                 </tbody>
