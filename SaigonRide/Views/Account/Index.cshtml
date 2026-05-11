@@ -1,0 +1,42 @@
+﻿@model IEnumerable<SaigonRide.Models.Entities.User>
+
+@{
+    ViewData["Title"] = "User Directory";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="bi bi-people-fill text-primary"></i> User Directory</h2>
+        <span class="badge bg-info text-dark">Total: @Model.Count() Members</span>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">Full Name</th>
+                        <th>Email</th>
+                        <th>User Type</th>
+                        <th class="pe-4">ID Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="ps-4 fw-bold">@user.FullName</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <span class="badge @(user.UserType == "Local" ? "bg-success" : "bg-warning text-dark")">
+                                    @user.UserType
+                                </span>
+                            </td>
+                            <td class="pe-4">@user.IdNumber</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

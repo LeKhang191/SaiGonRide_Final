@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SaigonRide.Services
 {
-    public class VnPayLibrary
+    public class PaymentLibrary
     {
         private readonly SortedList<string, string> _requestData = new SortedList<string, string>(new VnPayComparer());
         private readonly SortedList<string, string> _responseData = new SortedList<string, string>(new VnPayComparer());
@@ -36,16 +36,23 @@ namespace SaigonRide.Services
             var data = new StringBuilder();
             foreach (var kv in _requestData)
             {
-                data.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value) + "&");
+                if (!string.IsNullOrEmpty(kv.Value))
+                {
+                    data.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value) + "&");
+                }
             }
 
             string queryString = data.ToString();
-            baseUrl += "?" + queryString;
-            string signData = queryString.Remove(queryString.Length - 1);
-            string vnp_SecureHash = HmacSha512(vnp_HashSecret, signData);
-            baseUrl += "vnp_SecureHash=" + vnp_SecureHash;
+            if (queryString.EndsWith("&"))
+            {
+                queryString = queryString.Remove(queryString.Length - 1);
+            }
 
-            return baseUrl;
+            string vnp_SecureHash = HmacSha512(vnp_HashSecret, queryString);
+
+            string paymentUrl = baseUrl + "?" + queryString + "&vnp_SecureHash=" + vnp_SecureHash;
+
+            return paymentUrl;
         }
 
         public bool ValidateSignature(string inputHash, string secretKey)

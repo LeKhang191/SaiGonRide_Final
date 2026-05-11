@@ -13,21 +13,29 @@ namespace SaigonRide.Services
 
         public string CreatePaymentUrl(HttpContext context, int rentalId, double amount)
         {
-            var vnpay = new VnPayLibrary();
+            var vnpay = new PaymentLibrary();
             var vnp_TmnCode = _config["VnPay:TmnCode"];
             var vnp_HashSecret = _config["VnPay:HashSecret"];
             var vnp_Url = _config["VnPay:BaseUrl"];
             var vnp_ReturnUrl = _config["VnPay:ReturnUrl"];
 
+            long vnpAmount = (long)(amount * 100);
+
             vnpay.AddRequestData("vnp_Version", "2.1.0");
             vnpay.AddRequestData("vnp_Command", "pay");
             vnpay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
-            vnpay.AddRequestData("vnp_Amount", (amount * 100).ToString()); // VNPay nhân 100 số tiền
+            vnpay.AddRequestData("vnp_Amount", vnpAmount.ToString());
             vnpay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
             vnpay.AddRequestData("vnp_CurrCode", "VND");
-            vnpay.AddRequestData("vnp_IpAddr", context.Connection.RemoteIpAddress?.ToString() ?? "127.0.0.1");
+
+            var ipAddr = context.Connection.RemoteIpAddress?.ToString();
+            if (string.IsNullOrEmpty(ipAddr) || ipAddr == "::1") ipAddr = "127.0.0.1";
+            vnpay.AddRequestData("vnp_IpAddr", ipAddr);
+
             vnpay.AddRequestData("vnp_Locale", "vn");
-            vnpay.AddRequestData("vnp_OrderInfo", "Thanh toan don hang SaigonRide #" + rentalId);
+
+            vnpay.AddRequestData("vnp_OrderInfo", "Pay order SaigonRide " + rentalId);
+
             vnpay.AddRequestData("vnp_OrderType", "other");
             vnpay.AddRequestData("vnp_ReturnUrl", vnp_ReturnUrl);
             vnpay.AddRequestData("vnp_TxnRef", rentalId.ToString());
@@ -37,7 +45,7 @@ namespace SaigonRide.Services
 
         public VnPayResponseModel PaymentExecute(IQueryCollection collections)
         {
-            var vnpay = new VnPayLibrary();
+            var vnpay = new PaymentLibrary();
             foreach (var (key, value) in collections)
             {
                 if (!string.IsNullOrEmpty(key) && key.StartsWith("vnp_"))

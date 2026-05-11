@@ -51,5 +51,21 @@ namespace SaigonRide.Controllers
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            var users = _context.Users.ToList();
+            return View(users);
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            TempData["Success"] = "You have been logged out.";
+
+            return RedirectToAction("Login", "Account");
+        }
     }
 }
