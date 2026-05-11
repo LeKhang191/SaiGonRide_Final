@@ -134,24 +134,21 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <div class="btn-group btn-group-sm">
+                                    <div class="btn-group">
                                         @if (rental.Status == "Active")
                                         {
                                             <a asp-action="EndRental" asp-route-id="@rental.RentalId"
-                                                   class="btn btn-dark me-1" style="border-radius: 10px;">
+                                                   class="btn btn-dark btn-action-small me-1" style="border-radius: 6px;">
                                                 <i class="bi bi-flag-fill"></i> END
                                             </a>
                                         }
-                                        <a asp-action="Delete" asp-route-id="@rental.RentalId" class="btn btn-outline-dark" ...>
-
-                                            <form asp-controller="Account" asp-action="Delete" asp-route-id="@rental.UserId" method="post"
-                                                  onsubmit="return confirm('Delete user @rental.User?.FullName?');" style="display:inline;">
-                                                @Html.AntiForgeryToken()
-                                                <button type="submit" class="btn btn-outline-dark" style="border-radius: 10px;">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        </a>
+                                        <form asp-controller="Account" asp-action="Delete" asp-route-id="@rental.UserId" method="post"
+                                              onsubmit="return confirm('Delete record?');" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-outline-dark btn-action-small" style="border-radius: 6px;">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

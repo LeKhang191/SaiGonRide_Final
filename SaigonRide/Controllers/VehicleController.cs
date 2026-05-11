@@ -55,7 +55,7 @@ namespace SaigonRide.Controllers
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Station = new SelectList(_context.Stations, "StationId", "Name", vehicle.StationId);
+            ViewBag.Stations = new SelectList(_context.Stations, "StationId", "Name", vehicle.StationId);
             return View(vehicle);
         }
 

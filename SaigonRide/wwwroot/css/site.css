@@ -70,6 +70,15 @@ body {
      transform: scale(1.05);
 }
 
+.btn-action-small {
+    padding: 0.2rem 0.4rem !important;
+    font-size: 0.75rem !important;
+}
+
+.filter-row-custom {
+    margin-top: 2rem;
+}
+
 .navbar, .sidebar, header {
     background-color: #E8E4D8 !important;
     border-bottom: 1px solid #000;

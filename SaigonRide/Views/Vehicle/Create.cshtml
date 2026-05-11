@@ -16,6 +16,20 @@
                             <input asp-for="VehicleNumber" class="form-control" placeholder="e.g. SR-001" />
                         </div>
                         <div class="mb-3">
+                            <label class="form-label">Vehicle Type</label>
+                            <select asp-for="Type" class="form-select">
+                                <option value="Standard Bike">Standard Bike (500đ/min)</option>
+                                <option value="Electric Bike">E-Scooter (1500đ/min)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Station</label>
+                            <select asp-for="StationId" class="form-select" asp-items="ViewBag.Stations">
+                                <option value="">-- Select a Station --</option>
+                            </select>
+                            <span asp-validation-for="StationId" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Status</label>
                             <select asp-for="Status" class="form-select">
                                 <option value="Available">Available</option>
