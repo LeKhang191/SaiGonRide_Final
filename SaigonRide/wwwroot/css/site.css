@@ -31,35 +31,41 @@ body {
 }
 
 :root {
-    --warm-beige-bg: #FDFCE8;
-    --warm-beige-card: #E2CEB1;
-    --warm-beige-accent: #C7A07A;
-    --warm-beige-text: #391E10;
+    --bg-page: #F5F2E8;
+    --bg-card: #E8E4D8;
+    --pure-black: #000000;
 }
 
 body {
-    background-color: var(--warm-beige-bg) !important;
-    color: var(--warm-beige-text) !important;
+    background-color: var(--bg-page) !important;
+    color: var(--pure-black) !important;
 }
 
 .card {
-    background-color: var(--warm-beige-card) !important;
-    border: 1px solid var(--warm-beige-accent) !important;
-    color: var(--warm-beige-text) !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid rgba(0,0,0,0.1) !important;
+    border-radius: 20px !important;
+    transition: all 0.3s ease;
 }
 
-.sidebar, .bg-dark, [style*="background: linear-gradient"] {
-    background: var(--warm-beige-accent) !important;
-    color: var(--warm-beige-text) !important;
+    .card-title, .card-text, .card-header, .card h3, .card p {
+        color: var(--pure-black) !important;
+    }
+
+.bi, .fas, .far, [class^="bi-"] {
+    color: var(--pure-black) !important;
+    -webkit-text-stroke: 0.5px var(--pure-black);
 }
 
 .btn-primary {
-    background-color: var(--warm-beige-accent) !important;
-    border-color: var(--warm-beige-text) !important;
-    color: var(--warm-beige-text) !important;
+    background-color: var(--pure-black) !important;
+    color: var(--bg-page) !important;
+    border-radius: 50px !important;
+    border: none;
+    font-weight: 600;
 }
 
-.table {
-    --bs-table-bg: var(--warm-beige-card);
-    color: var(--warm-beige-text);
+.btn-primary:hover {
+    opacity: 0.8;
+     transform: scale(1.05);
 }
