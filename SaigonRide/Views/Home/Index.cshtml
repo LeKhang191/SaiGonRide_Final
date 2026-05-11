@@ -14,10 +14,10 @@
         transition: 1.2s all ease-out;
     }
 
-        .reveal.active {
-            transform: translateY(0);
-            opacity: 1;
-        }
+    .reveal.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
 
     .flip-card {
         background-color: transparent;
@@ -45,11 +45,11 @@
         border: 1px solid #000;
     }
 
-        .flip-card-front img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    .flip-card-front img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
     .flip-card-back {
         background-color: #E8E4D8;
@@ -65,6 +65,23 @@
     .flip-card.flipped .flip-card-inner {
         transform: rotateY(180deg);
     }
+
+    .tilt-card {
+        perspective: 1000px;
+        height: 100%;
+    }
+
+    .tilt-card .card {
+        transform-style: preserve-3d;
+        transition: transform 0.5s ease;
+        box-shadow: -10px 10px 0px #000 !important; 
+        border: 1px solid #000 !important;
+        background-color: #E8E4D8;
+    }
+
+    .tilt-card:hover .card {
+        box-shadow: -15px 15px 0px #000 !important;
+    }
 </style>
 
 <div class="container py-5">
@@ -75,41 +92,47 @@
 
     <div class="row row-cols-1 row-cols-md-3 g-4 align-items-stretch">
         <div class="col">
-            <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid rgba(0,0,0,0.1);">
-                <div class="text-center mb-3">
-                    <img src="~/images/station.png" alt="Station Icon" style="height: 60px; width: auto; filter: brightness(0);" />
-                </div>
-                <h4 class="fw-bold text-center text-dark text-uppercase">STATION & USER</h4>
-                <p class="text-center text-dark small px-2">Manage the network of base stations and the system's customer list.</p>
-                <div class="d-grid gap-2 mt-auto">
-                    <a href="/Station" class="btn btn-dark">Manage Stations</a>
-                    <a href="/Account" class="btn btn-dark">User Directory</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid rgba(0,0,0,0.1);">
-                <div class="text-center mb-3">
-                    <img src="~/images/escooter.png" alt="Fleet Icon" style="height: 60px; width: auto; filter: brightness(0);" />
-                </div>
-                <h4 class="fw-bold text-center text-dark text-uppercase">FLEET</h4>
-                <p class="text-center text-dark small px-2">Complete vehicle inspection and maintenance status.</p>
-                <div class="d-grid mt-auto">
-                    <a href="/Vehicle" class="btn btn-dark">Vehicle Management</a>
+            <div class="tilt-card">
+                <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
+                    <div class="text-center mb-3">
+                        <img src="~/images/station.png" alt="Station" style="height: 60px; width: auto; filter: brightness(0);" />
+                    </div>
+                    <h4 class="fw-bold text-center text-dark text-uppercase">STATION & USER</h4>
+                    <p class="text-center text-dark small px-2">Manage the network of base stations and customers.</p>
+                    <div class="d-grid gap-2 mt-auto">
+                        <a href="/Station" class="btn btn-dark">Manage Stations</a>
+                        <a href="/Account" class="btn btn-dark">User Directory</a>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col">
-            <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid rgba(0,0,0,0.1);">
-                <div class="text-center mb-3">
-                    <img src="~/images/payment.png" alt="Payment Icon" style="height: 60px; width: auto; filter: brightness(0);" />
+            <div class="tilt-card">
+                <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
+                    <div class="text-center mb-3">
+                        <img src="~/images/escooter.png" alt="Fleet" style="height: 60px; width: auto; filter: brightness(0);" />
+                    </div>
+                    <h4 class="fw-bold text-center text-dark text-uppercase">FLEET</h4>
+                    <p class="text-center text-dark small px-2">Vehicle inspection and maintenance status.</p>
+                    <div class="d-grid mt-auto">
+                        <a href="/Vehicle" class="btn btn-dark">Vehicle Management</a>
+                    </div>
                 </div>
-                <h4 class="fw-bold text-center text-dark text-uppercase">RENTAL & PAYMENT</h4>
-                <p class="text-center text-dark small px-2">Operate automated rental and invoice processing.</p>
-                <div class="d-grid mt-auto">
-                    <a href="/Rental" class="btn btn-dark">Rental Operations</a>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="tilt-card">
+                <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
+                    <div class="text-center mb-3">
+                        <img src="~/images/payment.png" alt="Payment" style="height: 60px; width: auto; filter: brightness(0);" />
+                    </div>
+                    <h4 class="fw-bold text-center text-dark text-uppercase">RENTAL & PAYMENT</h4>
+                    <p class="text-center text-dark small px-2">Automated rental and invoice processing.</p>
+                    <div class="d-grid mt-auto">
+                        <a href="/Rental" class="btn btn-dark">Rental Operations</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -195,7 +218,6 @@
         }
 
         const cards = document.querySelectorAll('.flip-card');
-
         cards.forEach(card => {
             const inner = card.querySelector('.flip-card-inner');
 
@@ -226,5 +248,30 @@
 
         window.addEventListener("scroll", reveal);
         window.addEventListener("load", reveal);
+
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(wrapper => {
+            const card = wrapper.querySelector('.card');
+
+            wrapper.addEventListener('mousemove', (e) => {
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+            
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -12;
+                const rotateY = ((x - centerX) / centerX) * 12;
+
+                card.style.transition = "none";
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+            });
+
+            wrapper.addEventListener('mouseleave', () => {
+                card.style.transition = "transform 0.5s ease";
+                card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+            });
+        });
     </script>
 }
