@@ -34,6 +34,25 @@
         </div>
     </div>
 
+    <div class="mb-4 p-3 border-danger shadow-sm"
+         style="background-color: #fff1f0; border: 2px dashed #dc3545; border-radius: 5px;">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="text-danger fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">
+                    <i class="bi bi-bug-fill"></i> TEST TIME
+                </h6>
+                <p class="text-muted mb-0 small">up to 3 hours </p>
+            </div>
+            <form asp-action="FastForward" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="rentalId" value="@Model.RentalId" />
+                <button type="submit" class="btn btn-danger fw-bold px-3" style="border-radius: 5px;">
+                    SIMULATE
+                </button>
+            </form>
+        </div>
+    </div>
+
     <div class="card border-dark shadow-sm" style="background-color: #E8E4D8; border-radius: 25px;">
         <div class="card-body p-4">
             <form asp-action="EndRental" method="post">

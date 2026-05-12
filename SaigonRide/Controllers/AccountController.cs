@@ -2,6 +2,7 @@
 using SaigonRide.Data;
 using SaigonRide.Models.Entities;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace SaigonRide.Controllers
 {
@@ -66,12 +67,45 @@ namespace SaigonRide.Controllers
             var user = await _context.Users.FindAsync(id);
             if (user == null) return NotFound();
 
-            var userRentals = _context.Rentals.Where(r => r.UserId == id);
-            _context.Rentals.RemoveRange(userRentals);
+            bool hasActiveTrip = await _context.Rentals
+                .AnyAsync(r => r.UserId == id && r.Status == "Active");
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            if (hasActiveTrip)
+            {
+                TempData["Error"] = "Cannot delete: This user currently has an active rental!";
+                return RedirectToAction("Index");
+            }
 
+            try
+            {
+                var userRentals = _context.Rentals.Where(r => r.UserId == id);
+                _context.Rentals.RemoveRange(userRentals);
+
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "User deleted successfully.";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "An error occurred: " + ex.Message;
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ClearUserHistory(int id)
+        {
+            var userRentals = _context.Rentals.Where(r => r.UserId == id).ToList();
+
+            if (userRentals.Any())
+            {
+                _context.Rentals.RemoveRange(userRentals);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "This user's car rental history has been completely deleted..";
+            }
             return RedirectToAction("Index");
         }
 

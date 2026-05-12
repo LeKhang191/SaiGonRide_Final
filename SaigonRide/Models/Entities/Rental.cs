@@ -41,5 +41,6 @@ namespace SaigonRide.Models.Entities
         public virtual Vehicle? Vehicle { get; set; }
         public virtual Station? StartStation { get; set; }
         public virtual Station? EndStation { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

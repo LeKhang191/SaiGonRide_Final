@@ -89,6 +89,7 @@ namespace SaigonRide.Controllers
             if (rental == null) return NotFound();
 
             ViewBag.Stations = new SelectList(_context.Stations, "StationId", "Name");
+
             return View(rental);
         }
 
@@ -104,6 +105,7 @@ namespace SaigonRide.Controllers
 
             DateTime endTime = DateTime.Now;
             var duration = (endTime - rental.StartTime).TotalMinutes;
+            duration = duration < 0 ? 120 : Math.Max(1, duration);
             double rate = (rental.Vehicle?.Type == "Electric Bike") ? 1500 : 500;
             double baseFare = Math.Max(1, duration) * rate;
 
@@ -216,6 +218,18 @@ namespace SaigonRide.Controllers
             if (rental == null) return NotFound();
             return View(rental);
         }
+
+        public async Task<IActionResult> FastForward(int rentalId)
+        {
+            var rental = await _context.Rentals.FindAsync(rentalId);
+            if (rental != null)
+            {
+                rental.StartTime = DateTime.Now.AddHours(-3);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("EndRental", new { id = rentalId });
+        }
+
 
         private void PopulateDropdowns()
         {
