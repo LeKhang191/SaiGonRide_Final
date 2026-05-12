@@ -17,5 +17,6 @@ namespace SaigonRide.Models.Entities
 
         // Logic for checking
         public bool IsLowInventory => (double)CurrentInventory / MaxCapacity < 0.2;
+        public bool IsDeleted { get; set; } = false;
     }
 }

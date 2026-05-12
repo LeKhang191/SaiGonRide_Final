@@ -18,7 +18,7 @@ namespace SaigonRide.Controllers
         // Read
         public IActionResult Index()
         {
-            var stations = _context.Stations.ToList();
+            var stations = _context.Stations.Where(s => !s.IsDeleted).ToList();
             return View(stations);
         }
 
@@ -94,7 +94,7 @@ namespace SaigonRide.Controllers
                 return RedirectToAction("Index");
             }
 
-            _context.Stations.Remove(station);
+            station.IsDeleted = true;
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
