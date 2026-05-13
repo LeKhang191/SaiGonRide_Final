@@ -1,0 +1,355 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Home Page - SaigonRide";
+    var userRole = HttpContextAccessor.HttpContext.Session.GetString("UserRole");
+    var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserId");
+}
+
+<style>
+    .card, .btn, .flip-card-front, .flip-card-back {
+        border-radius: 5px !important;
+    }
+
+    .reveal {
+        position: relative;
+        transform: translateY(50px);
+        opacity: 0;
+        transition: 1.2s all ease-out;
+    }
+
+    .reveal.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .flip-card {
+        background-color: transparent;
+        width: 100%;
+        height: 250px;
+        perspective: 1000px;
+        cursor: pointer;
+    }
+
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-style: preserve-3d;
+        box-shadow: 10px 10px 0px #000;
+    }
+
+    .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        border: 1px solid #000;
+    }
+
+    .flip-card-front img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .flip-card-back {
+        background-color: #E8E4D8;
+        color: #000;
+        transform: rotateY(180deg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .flip-card.flipped .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .tilt-card {
+        perspective: 1000px;
+        height: 100%;
+    }
+
+    .tilt-card .card {
+        transform-style: preserve-3d;
+        transition: transform 0.5s ease;
+        box-shadow: -10px 10px 0px #000 !important; 
+        border: 1px solid #000 !important;
+        background-color: #E8E4D8;
+    }
+
+    .tilt-card:hover .card {
+        box-shadow: -15px 15px 0px #000 !important;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="container py-5 reveal active">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6 pe-lg-5 mb-5 mb-lg-0">
+                <span class="badge rounded-pill mb-3 py-2 px-3" style="border: 1px solid var(--text-color); color: var(--text-color);">
+                    <i class="bi bi-lightning-charge-fill text-warning"></i> Green energy for Saigon
+                </span>
+                <h1 class="display-3 fw-bold text-dark text-uppercase mb-4" style="line-height: 1.1;">
+                    Beats <br />
+                    <span style="font-family: serif; font-style: italic; font-weight: normal;">City</span>
+                </h1>
+                <p class="lead text-dark opacity-75 mb-5" style="max-width: 450px;">
+                    SaigonRide is not just a car rental service. That's how you feel every breeze, every street and immerse yourself in the rhythm of modern life in the most sustainable way.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="/Map" class="btn btn-dark py-3 px-4 fw-bold" style="border-radius: 5px;">
+                        <i class="bi bi-geo-alt-fill me-2"></i> Explore
+                    </a>
+                    <a href="#how-it-works" class="btn py-3 px-4 fw-bold" style="border: 1px solid var(--border-color); color: var(--text-color); border-radius: 5px;">
+                        Learn more
+                    </a>
+                </div>
+            </div>
+        
+            <div class="col-lg-6 position-relative text-center">
+                <div class="position-absolute top-50 start-50 translate-middle" style="width: 400px; height: 400px; background-color: var(--border-color); opacity: 0.1; border-radius: 50%; z-index: 0;"></div>
+            
+                <img src="~/images/escooter.png" alt="SaigonRide E-Scooter" class="img-fluid position-relative" style="z-index: 1; transform: scale(1.2); filter: drop-shadow(-10px 15px 15px rgba(0,0,0,0.3)); animation: float 4s ease-in-out infinite;" />
+            </div>
+        </div>
+    </div>
+
+    <div id="how-it-works" class="container py-5 reveal mt-5 border-top border-dark">
+        <div class="row text-left mb-5">
+            <h6 class="text-uppercase fw-bold opacity-50 text-dark">Simple process</h6>
+            <h2 class="fw-bold text-dark text-uppercase">Get started in just 2 steps</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 p-4 border-0 text-center" style="background: transparent;">
+                    <i class="bi bi-geo-alt display-1 mb-3 text-dark"></i>
+                    <h4 class="fw-bold text-dark text-uppercase">1. Find</h4>
+                    <p class="text-dark opacity-75 small">Use the online map to search for the E-Scooter or Bike closest to you.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 p-4 border-0 text-center" style="background: transparent;">
+                    <i class="bi bi-wind display-1 mb-3 text-dark"></i>
+                    <h4 class="fw-bold text-dark text-uppercase">2. Ride</h4>
+                    <p class="text-dark opacity-75 small">Enjoy your journey. Return the car at any SaigonRide station.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 align-items-stretch">
+        @if (userRole == "Admin")
+        {
+            <div class="col">
+                <div class="tilt-card">
+                    <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
+                        <div class="text-center mb-3">
+                            <img src="~/images/station.png" alt="Station" style="height: 60px; width: auto; filter: brightness(0);" />
+                        </div>
+                        <h4 class="fw-bold text-center text-dark text-uppercase">STATION & USER</h4>
+                        <p class="text-center text-dark small px-2">Manage the network of base stations and customers.</p>
+                        <div class="d-grid gap-2 mt-auto">
+                            <a href="/Station" class="btn btn-dark">Manage Stations</a>
+                            <a href="/Account" class="btn btn-dark">User Directory</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="tilt-card">
+                    <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
+                        <div class="text-center mb-3">
+                            <img src="~/images/escooter.png" alt="Fleet" style="height: 60px; width: auto; filter: brightness(0);" />
+                        </div>
+                        <h4 class="fw-bold text-center text-dark text-uppercase">FLEET</h4>
+                        <p class="text-center text-dark small px-2">Vehicle inspection and maintenance status.</p>
+                        <div class="d-grid mt-auto">
+                            <a href="/Vehicle" class="btn btn-dark">Vehicle Management</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (userId != null || userRole == "Admin")
+        {
+            <div class="col">
+                <div class="tilt-card">
+                    <a href="@Url.Action("Index", "Map")" class="text-decoration-none h-100">
+                        <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
+                            <div class="text-center mb-3">
+                                <img src="~/images/map-icon.png" alt="Map" style="height: 60px; width: auto; filter: brightness(0);"
+                                     onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/854/854878.png';" />
+                            </div>
+                            <h4 class="fw-bold text-center text-dark text-uppercase">EXPLORE MAP</h4>
+                            <p class="text-center text-dark small px-2">View all stations and real-time vehicle availability on the city map.</p>
+                            <div class="d-grid mt-auto">
+                                <span class="btn btn-dark">Open Live Map</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="tilt-card">
+                    <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
+                        <div class="text-center mb-3">
+                            <img src="~/images/payment.png" alt="Payment" style="height: 60px; width: auto; filter: brightness(0);" />
+                        </div>
+                        <h4 class="fw-bold text-center text-dark text-uppercase">RENTAL & PAYMENT</h4>
+                        <p class="text-center text-dark small px-2">Automated rental and invoice processing.</p>
+                        <div class="d-grid mt-auto">
+                            <a href="/Rental" class="btn btn-dark">Rental Operations</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="about-section reveal mt-5 py-5">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="flip-card" id="card1">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front"><img src="~/images/scooterbg.jpg" alt="Fleet"></div>
+                                <div class="flip-card-back"><h6 class="fw-bold">SMART FLEET</h6><p class="small">E-Scooter ecosystem.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="flip-card" id="card2">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front"><img src="~/images/e1.jpg" alt="Station"></div>
+                                <div class="flip-card-back"><h6 class="fw-bold">NETWORK</h6><p class="small">Strategically located.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="flip-card" id="card3">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front"><img src="~/images/e2.jpg" alt="Payment"></div>
+                                <div class="flip-card-back"><h6 class="fw-bold">GLOBAL PAY</h6><p class="small">PayPal supported.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="flip-card" id="card4">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front"><img src="~/images/e3.jpg" alt="Eco"></div>
+                                <div class="flip-card-back"><h6 class="fw-bold">ECO IMPACT</h6><p class="small">Green mobility.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5 ps-md-5 mt-4 mt-md-0">
+                <h6 class="text-uppercase fw-bold text-muted mb-2">Our Mission</h6>
+                <h2 class="fw-bold text-dark mb-4">REDEFINING URBAN TRANSIT</h2>
+                <p class="text-dark">SaigonRide provides a seamless micro-mobility ecosystem designed for modern rhythms.</p>
+                <div class="mt-4">
+                    <button class="btn btn-dark px-4 py-2" onclick="flipAllCards()">FLIP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            const windowHeight = window.innerHeight;
+
+            reveals.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 150) {
+                    element.classList.add("active");
+                    
+                    ["card1", "card2", "card3", "card4"].forEach((id, index) => {
+                        setTimeout(() => {
+                            const card = document.getElementById(id);
+                            if (card) card.classList.add("flipped");
+                        }, 800 + (index * 200));
+                    });
+                }
+            });
+        }
+
+        function flipAllCards() {
+            for(let i = 1; i <= 4; i++) {
+                const card = document.getElementById("card" + i);
+                if (card) card.classList.toggle("flipped");
+            }
+        }
+
+        const cards = document.querySelectorAll('.flip-card');
+        cards.forEach(card => {
+            const inner = card.querySelector('.flip-card-inner');
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                const isFlipped = card.classList.contains('flipped');
+                const finalRotateY = isFlipped ? (rotateY + 180) : rotateY;
+
+                inner.style.transition = "none";
+                inner.style.transform = `rotateX(${rotateX}deg) rotateY(${finalRotateY}deg) scale(1.05)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                inner.style.transition = "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+                const isFlipped = card.classList.contains('flipped');
+                inner.style.transform = isFlipped ? "rotateY(180deg)" : "rotateX(0deg) rotateY(0deg)";
+            });
+        });
+
+        window.addEventListener("scroll", reveal);
+        window.addEventListener("load", reveal);
+
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(wrapper => {
+            const card = wrapper.querySelector('.card');
+
+            wrapper.addEventListener('mousemove', (e) => {
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+            
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -12;
+                const rotateY = ((x - centerX) / centerX) * 12;
+
+                card.style.transition = "none";
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+            });
+
+            wrapper.addEventListener('mouseleave', () => {
+                card.style.transition = "transform 0.5s ease";
+                card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+            });
+        });
+    </script>
+}

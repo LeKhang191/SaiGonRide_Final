@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@model IEnumerable<SaigonRide.Models.Entities.Station>
+
+@{
+    var userRole = HttpContextAccessor.HttpContext.Session.GetString("UserRole");
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong> @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">📍 Station Management</h2>
+        <a asp-controller="Station" asp-action="Create" class="btn btn-success shadow-sm">
+            <i class="bi bi-plus-circle"></i> Add New Station
+        </a>
+    </div>
+
+    <div class="row mb-5">
+        @foreach (var item in Model)
+        {
+            double percent = (double)item.CurrentInventory / item.MaxCapacity * 100;
+            string borderClass = item.IsLowInventory ? "border-danger bg-light" : "border-primary";
+            string textClass = item.IsLowInventory ? "text-danger" : "text-primary";
+            string barClass = item.IsLowInventory ? "bg-danger" : "bg-success";
+
+            <div class="col-md-4 mb-3">
+                <div class="card @borderClass shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title @textClass fw-bold">@item.Name</h5>
+                        <p class="card-text text-muted small"><i class="bi bi-geo-alt"></i> @item.Location</p>
+                        
+                        <div class="progress mb-2" style="height: 12px;">
+                            <div class="progress-bar @barClass progress-bar-striped progress-bar-animated"
+                                 style="width: @percent%"></div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="@(item.IsLowInventory ? "text-danger fw-bold" : "text-muted")">
+                                @item.CurrentInventory / @item.MaxCapacity (@Math.Round(percent, 0)%)
+                            </small>
+                            @if (item.IsLowInventory)
+                            {
+                                <span class="badge bg-danger animate__animated animate__flash animate__infinite">Low Inventory</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <hr />
+
+    <h4 class="mb-3 text-secondary">Admin Controls</h4>
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover align-middle bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>Station Name</th>
+                    <th>Location</th>
+                    <th>Max Capacity</th>
+                    <th>Inventory</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@item.Name</td>
+                        <td>@item.Location</td>
+                        @if (userRole == "Admin")
+                        {
+                            <td>@item.MaxCapacity</td>
+                            <td><span class="badge ...">@item.CurrentInventory</span></td>
+                        }
+                        <td class="text-center">
+                            @if (userRole == "Admin")
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.StationId" class="btn btn-sm btn-outline-warning">Edit</a>
+                                <form asp-action="Delete" asp-route-id="@item.StationId" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a asp-controller="Rental" asp-action="StartRental" asp-route-stationId="@item.StationId" class="btn btn-primary w-100">
+                                    RENT AT THIS STATION
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

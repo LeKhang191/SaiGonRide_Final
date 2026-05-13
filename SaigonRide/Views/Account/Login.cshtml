@@ -1,0 +1,111 @@
+﻿@model SaigonRide.Models.Entities.User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - SaigonRide</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body, html { 
+            height: 100%; 
+            margin: 0; 
+            font-family: 'Segoe UI', sans-serif; 
+        }
+
+        .bg-image {
+            background-image: url('/images/scooter.jpg');
+            background-size: cover; 
+            background-position: center;
+            height: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+        }
+
+        .login-card {
+            background: white; 
+            padding: 40px; 
+            border-radius: 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+            width: 100%; 
+            max-width: 450px;
+        }
+        .btn-login {
+            background-color: #2D2D2D; 
+            color: white; 
+            border-radius: 5px;
+            padding: 12px; 
+            font-weight: bold; 
+            border: none; 
+            width: 100%; 
+            margin-top: 1rem;
+        }
+
+        .btn-login:hover { 
+            color: white;
+            background-color: #000; 
+        }
+        .form-label { 
+            font-size: 0.75rem; 
+            font-weight: bold;
+            color: #666; 
+            text-transform: uppercase; 
+        }
+
+        .register-card, .login-card {
+                background: #F5F2E8;
+            padding: 40px; 
+            border-radius: 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+            width: 100%; 
+            max-width: 500px;
+            position: relative; 
+            z-index: 10;       
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-image">
+    <div class="login-card">
+        <div class="mb-3">
+            <h4 class="fw-bold">Saigon<span class="text-primary">Ride</span></h4>
+        </div>
+        <h2 class="fw-bold mb-2">Welcome back</h2>
+        <p class="text-muted mb-4 small">Please enter your details to sign in.</p>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger py-2 small">
+                @Html.ValidationSummary(true, "")
+            </div>
+        }
+
+        <form asp-action="Login" method="post">
+            <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-control form-control-lg" placeholder="name@example.com" required />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control form-control-lg" placeholder="••••••••" required />
+            </div>
+
+            <button type="submit" class="btn btn-login">Login</button>
+        </form>
+
+        <div class="text-center mt-4 small">
+        Don't have an account? 
+        <a asp-controller="Account" asp-action="Register" class="text-decoration-none fw-bold">Sign up</a>
+    </div>
+    </div>
+</div>
+
+</body>
+</html>

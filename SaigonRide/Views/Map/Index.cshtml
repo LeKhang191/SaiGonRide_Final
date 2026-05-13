@@ -1,0 +1,52 @@
+﻿@model IEnumerable<SaigonRide.Models.Entities.Station>
+@{
+    ViewData["Title"] = "SaigonRide - Live Map";
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<div class="container-fluid py-4" style="background-color: #F5F2E8;">
+    <h2 class="fw-bold text-dark text-uppercase mb-4"><i class="bi bi-geo-alt-fill"></i> Live Stations Map</h2>
+    
+    <div id="map" style="height: 600px; border: 2px solid #000; border-radius: 5px;"></div>
+</div>
+
+@section Scripts {
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([10.762622, 106.660172], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        function loadStationsOnMap() {
+            fetch('/Map/GetStations')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(station => {
+                        if (station.latitude && station.longitude) {
+                            let markerColor = station.status === "Empty" ? "red" : (station.status === "Low" ? "orange" : "green");
+                            
+                            var marker = L.marker([station.latitude, station.longitude]).addTo(map);
+                            
+                            marker.bindPopup(`
+                                <div style="color:black; font-family: 'Arial';">
+                                    <b style="text-uppercase">${station.name}</b><br>
+                                    <span class="badge" style="background-color:${markerColor}">Status: ${station.status}</span><br>
+                                    Inventory: <b>${station.currentInventory}/${station.maxCapacity}</b><br>
+                                    <a href="/Rental/StartRental?stationId=${station.stationId}" 
+                                       class="btn btn-sm btn-dark text-white mt-2" 
+                                       style="font-size:10px; width:100%;">RENT HERE</a>
+                                </div>
+                            `);
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading stations:', error));
+        }
+
+        loadStationsOnMap();
+    </script>
+}
+}

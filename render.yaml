@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: saigonride
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
+      - key: VnPay__ReturnUrl
+        sync: false
+      - key: PayPal__ReturnUrl
+        sync: false
+      - key: PayPal__CancelUrl
+        sync: false

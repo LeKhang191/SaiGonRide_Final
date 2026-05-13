@@ -1,0 +1,139 @@
+﻿@model SaigonRide.Models.Entities.Rental
+@{
+    ViewData["Title"] = "Return Vehicle";
+    Layout = "_AdminLayout";
+}
+
+<div class="container py-5" style="max-width: 600px; background-color: #F5F2E8; min-height: 100vh;">
+    <div class="mb-4">
+        <a asp-action="Index" class="text-decoration-none text-dark fw-bold"><i class="bi bi-arrow-left"></i> BACK TO RENTALS</a>
+        <h2 class="fw-bold mt-3 text-dark text-uppercase"><i class="bi bi-flag-fill"></i> Return Vehicle</h2>
+        <p class="text-dark opacity-75">Complete the journey and process payment</p>
+    </div>
+
+    <div class="card border-dark shadow-sm mb-4" style="background-color: #E8E4D8; border-radius: 20px;">
+        <div class="card-header bg-dark text-white fw-bold py-3" style="border-radius: 18px 18px 0 0;">
+            <i class="bi bi-info-circle"></i> ACTIVE RENTAL #@Model.RentalId
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-6">
+                    <div class="text-muted small text-uppercase fw-bold">User</div>
+                    <div class="fw-bold text-dark">@Model.User?.FullName</div>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small text-uppercase fw-bold">Vehicle</div>
+                    <div class="fw-bold text-dark">@Model.Vehicle?.VehicleNumber</div>
+                </div>
+                <div class="col-12">
+                    <hr class="border-dark opacity-25">
+                    <div class="text-muted small text-uppercase fw-bold">Duration so far</div>
+                    <div class="fs-4 fw-bold text-dark" id="duration-display">Calculating...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-4 p-3 border-danger shadow-sm"
+         style="background-color: #fff1f0; border: 2px dashed #dc3545; border-radius: 5px;">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="text-danger fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">
+                    <i class="bi bi-bug-fill"></i> TEST TIME
+                </h6>
+                <p class="text-muted mb-0 small">up to 3 hours </p>
+            </div>
+            <form asp-action="FastForward" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="rentalId" value="@Model.RentalId" />
+                <button type="submit" class="btn btn-danger fw-bold px-3" style="border-radius: 5px;">
+                    SIMULATE
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-dark shadow-sm" style="background-color: #E8E4D8; border-radius: 25px;">
+        <div class="card-body p-4">
+            <form asp-action="EndRental" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="rentalId" value="@Model.RentalId" />
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-dark text-uppercase" style="font-size: 0.8rem;">📍 Return Station</label>
+                    <select name="endStationId" class="form-select border-dark" required asp-items="ViewBag.Stations"
+                            style="background-color: #F5F2E8; border-radius: 10px;">
+                        <option value="">-- Choose Drop-off Point --</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-dark text-uppercase" style="font-size: 0.8rem;">💳 Payment Method</label>
+                    @{
+                        bool isTourist = Model.User?.UserType == "Tourist";
+                    }
+                    <div class="row g-2">
+                        @if (Model.User?.UserType == "Tourist")
+                        {
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="paymentMethod" id="paypal" value="PayPal" required>
+                                <label class="btn btn-outline-dark w-100 py-3 shadow-sm" for="paypal" style="border-radius: 15px; background-color: #F5F2E8;">
+                                    <img src="~/images/paypal.png" height="20" class="me-2"> PayPal
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="paymentMethod" id="applepay" value="ApplePay">
+                                <label class="btn btn-outline-dark w-100 py-3 shadow-sm" for="applepay" style="border-radius: 15px; background-color: #F5F2E8;">
+                                    <i class="bi bi-apple me-2"></i> Apple Pay
+                                </label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="paymentMethod" id="momo" value="MoMo" required>
+                                <label class="btn btn-outline-dark w-100 py-3 shadow-sm" for="momo" style="border-radius: 15px; background-color: #F5F2E8;">
+                                    <img src="~/images/momo.png" height="20" class="me-2"> MoMo
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" name="paymentMethod" id="vnpay" value="VNPay">
+                                <label class="btn btn-outline-dark w-100 py-2 d-flex flex-column align-items-center justify-content-center shadow-sm" for="vnpay" style="border-radius: 15px; background-color: #F5F2E8; height: 58px;">
+                                    <img src="~/images/vnpay.png" height="18" alt="VNPay">
+                                    <span style="font-size: 0.7rem;" class="mt-1">VNPay</span>
+                                </label>
+                            </div>
+                        }
+    
+                        <div class="col-12 mt-2">
+                            <input type="radio" class="btn-check" name="paymentMethod" id="cash" value="Cash">
+                            <label class="btn btn-outline-dark w-100 py-2 shadow-sm" for="cash" style="border-radius: 15px; background-color: #F5F2E8;">
+                                💵 Cash Payment
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100 py-3 fw-bold shadow-sm mt-2"
+                        style="border-radius: 50px; letter-spacing: 1px;">
+                    COMPLETE & PAY
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const startTime = new Date('@Model.StartTime.ToString("yyyy-MM-ddTHH:mm:ss")');
+        function updateDuration() {
+            const now = new Date();
+            const diffMs = now - startTime;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffSecs = Math.floor((diffMs % 60000) / 1000);
+            document.getElementById('duration-display').textContent = diffMins + 'm ' + diffSecs + 's';
+        }
+        updateDuration();
+        setInterval(updateDuration, 1000);
+    </script>
+}

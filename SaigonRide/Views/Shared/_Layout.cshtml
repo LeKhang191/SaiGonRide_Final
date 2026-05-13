@@ -1,0 +1,174 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var userRole = HttpContextAccessor.HttpContext.Session.GetString("UserRole");
+    var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserId");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SaigonRide</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .btn-dark {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-dark:hover {
+            transform: translateY(-3px);
+            box-shadow: -15px 15px 0px #000 !important;
+        }
+
+        .btn-dark:active {
+            transform: translateY(0);
+        }
+
+        #loader-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #F5F2E8; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader-bike {
+            width: 80px; animation: bounce 0.6s infinite alternate;
+        }
+        @@keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loader-wrapper">
+        <div class="loader-content">
+            <img src="~/images/escooter.png" class="loader-bike" alt="Loading..." />
+            <p class="fw-bold text-uppercase mt-3" style="letter-spacing: 5px;">SaigonRide...</p>
+        </div>
+    </div>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand text-primary fw-bold" href="/"><img src="~/images/escooter.png" alt="SaigonRide Logo" style="height: 40px; width: auto;" /></a>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item"><a class="nav-link text-dark" href="/">Home Page</a></li>
+
+                        @if (userId != null || userRole == "Admin")
+                        {
+                            <li class="nav-item"><a class="nav-link text-dark" href="/Station">Station</a></li>
+                        }
+
+                        @if (userId != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-success fw-bold" asp-controller="Rental" asp-action="Leaderboard">
+                                    <i class="bi bi-tree-fill"></i> Eco Leaderboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" asp-controller="Rental" asp-action="MyRides">
+                                    <i class="bi bi-card-checklist"></i> My Rides
+                                </a>
+                            </li>
+                        }
+
+                        @if (userRole == "Admin")
+                        {
+                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account" asp-action="Index">User</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" asp-controller="Admin" asp-action="Dashboard">
+                                    <i class="bi bi-shield-lock"></i> Admin
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item me-3">
+                            <button id="themeToggle" class="btn btn-sm" style="border: 1px solid var(--border-color); border-radius: 5px; background: transparent; color: var(--text-color);">
+                                <i id="themeIcon" class="bi bi-moon-fill"></i>
+                            </button>
+                        </li>
+
+                        @if (userId == null && userRole != "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" asp-controller="Account" asp-action="Login">Log in</a>
+                            </li>
+                            <li class="nav-item ms-2">
+                                <a class="btn btn-dark px-4 rounded-pill fw-bold" asp-controller="Account" asp-action="Register">Sign Up</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-danger fw-bold" asp-controller="Account" asp-action="Logout">Log out</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted mt-5 py-3">
+        <div class="container text-center">
+            &copy; 2026 - SaigonRide F2 Team  - 2526
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader-wrapper');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+            }, 1000); 
+        });
+    </script>
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.classList.replace('bi-moon-fill', 'bi-sun-fill');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            if (theme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('bi-sun-fill', 'bi-moon-fill');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('bi-moon-fill', 'bi-sun-fill');
+            }
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

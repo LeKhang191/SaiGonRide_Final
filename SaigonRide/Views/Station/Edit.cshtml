@@ -1,0 +1,68 @@
+﻿@model SaigonRide.Models.Entities.Station
+
+<div class="container mt-5">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0">🛠️ Edit Station: @Model.Name</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="StationId" />
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-bold">Station Name</label>
+                    <input asp-for="Name" class="form-control border-dark" placeholder="Enter station name" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Location" class="form-label fw-bold">Location</label>
+                    <input asp-for="Location" class="form-control border-dark" placeholder="Enter address/district" required />
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MaxCapacity" class="form-label fw-bold">Max Capacity</label>
+                        <input asp-for="MaxCapacity" type="number" class="form-control border-dark" min="1" required />
+                        <span asp-validation-for="MaxCapacity" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CurrentInventory" class="form-label fw-bold">Vehicles left</label>
+                        <input asp-for="CurrentInventory" type="number" class="form-control border-dark" min="0" />
+                        <span asp-validation-for="CurrentInventory" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Latitude" class="form-label fw-bold">Latitude</label>
+                        <input asp-for="Latitude" type="number" step="any" class="form-control border-dark" required />
+                        <span asp-validation-for="Latitude" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Longitude" class="form-label fw-bold">Longitude</label>
+                        <input asp-for="Longitude" type="number" step="any" class="form-control border-dark" required />
+                        <span asp-validation-for="Longitude" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <hr />
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                    <button type="submit" class="btn btn-warning px-4 fw-bold border-dark">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

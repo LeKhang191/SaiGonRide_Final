@@ -1,0 +1,36 @@
+﻿<div class="container mt-5">
+    <div class="card shadow-sm mx-auto" style="max-width: 500px;">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Payment Checkout</h4>
+        </div>
+        <div class="card-body">
+            <h5>Fare Summary</h5>
+            <div class="d-flex justify-content-between mb-2">
+                <span>Vehicle:</span> <strong>@ViewBag.VehicleNumber</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-4">
+                <span>Total Amount:</span> <strong class="text-danger">@ViewBag.Fare.ToString("N0") VND</strong>
+            </div>
+
+            <form asp-action="ProcessPayment" method="post">
+                <input type="hidden" name="VehicleId" value="@ViewBag.VehicleId" />
+                <input type="hidden" name="TotalFare" value="@ViewBag.Fare" />
+                <input type="hidden" name="VehicleNumber" value="@ViewBag.VehicleNumber" />
+                
+                <h6>Choose Payment Method</h6>
+                <div class="mb-3">
+                    <div class="form-check border p-2 rounded mb-2">
+                        <input class="form-check-input ms-1" type="radio" name="PaymentMethod" value="Momo" id="momo" checked>
+                        <label class="form-check-label ms-4" for="momo">Momo Wallet</label>
+                    </div>
+                    <div class="form-check border p-2 rounded mb-2">
+                        <input class="form-check-input ms-1" type="radio" name="PaymentMethod" value="Banking" id="banking">
+                        <label class="form-check-label ms-4" for="banking">Bank Transfer</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 py-2 fw-bold">PAY NOW</button>
+            </form>
+        </div>
+    </div>
+</div>

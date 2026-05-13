@@ -1,0 +1,110 @@
+@model SaigonRide.Models.Entities.Rental
+@{
+    ViewData["Title"] = "Start Rental";
+    Layout = "_Layout";
+}
+
+<div class="container py-5" style="max-width: 600px; background-color: #F5F2E8; min-height: 100vh;">
+    <div class="mb-4">
+        <a asp-action="Index" class="text-decoration-none text-dark fw-bold">
+            <i class="bi bi-arrow-left"></i> BACK TO RENTALS
+        </a>
+        <a href="/" class="btn btn-outline-dark btn-sm" style="border-radius: 20px;">
+            <i class="bi bi-house-door"></i> Home Page
+        </a>
+        <h2 class="fw-bold mt-3 text-dark text-uppercase">
+            <i class="bi bi-unlock-fill"></i> Start New Rental
+        </h2>
+        <p class="text-dark opacity-75">Unlock a vehicle and begin a new journey</p>
+    </div>
+
+    <div class="card shadow-sm border-dark" style="background-color: #E8E4D8; border-radius: 25px;">
+        <div class="card-body p-4">
+            <form asp-action="StartRental" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-dark text-uppercase" style="font-size: 0.8rem;">👤 Select User</label>
+                    <select name="userId" class="form-select border-dark" required asp-items="ViewBag.Users"
+                            style="background-color: #F5F2E8; border-radius: 10px;">
+                        <option value="">-- Choose Renter --</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-dark text-uppercase" style="font-size: 0.8rem;">🛵 Available Vehicle</label>
+                    <select name="vehicleId" class="form-select border-dark" required asp-items="ViewBag.Vehicles"
+                            style="background-color: #F5F2E8; border-radius: 10px;">
+                        <option value="">-- Choose Vehicle --</option>
+                    </select>
+
+                    <div class="text-center mt-3" id="vehicleImageContainer" style="display: none;">
+                        <img id="vehicleImagePreview" src="" alt="Vehicle Preview" class="shadow-sm" style="max-height: 150px; border-radius: 10px; border: 1px solid #000; object-fit: cover;" />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-dark text-uppercase" style="font-size: 0.8rem;">📍 Pickup Station</label>
+                    <select name="startStationId" class="form-select border-dark" required asp-items="ViewBag.Stations">
+                        <option value="">-- Choose Pickup Point --</option>
+                    </select>
+
+                    <script>
+                        const selectedStation = '@ViewBag.StartStationId';
+                        if (selectedStation) {
+                            document.querySelector('select[name="startStationId"]').value = selectedStation;
+                        }
+                    </script>
+                </div>
+
+                <div class="p-3 mb-4 border border-dark shadow-sm" style="background-color: #F5F2E8; border-radius: 15px;">
+                    <strong class="text-dark"><i class="bi bi-info-circle-fill"></i> PRICING POLICY:</strong><br>
+                    <div class="d-flex justify-content-between mt-2 text-dark">
+                        <span>🚲 Standard Bicycle</span>
+                        <span class="fw-bold">500 VND/min</span>
+                    </div>
+                    <div class="d-flex justify-content-between text-dark">
+                        <span>🛴 E-Scooter</span>
+                        <span class="fw-bold">1,500 VND/min</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100 py-3 fw-bold shadow-sm"
+                        style="border-radius: 50px; letter-spacing: 1px;">
+                    CONFIRM & START RENTAL
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const selectedStation = '@ViewBag.StartStationId';
+        if (selectedStation) {
+            const stationSelect = document.querySelector('select[name="startStationId"]');
+            if (stationSelect) {
+                stationSelect.value = selectedStation;
+            }
+        }
+
+        const vehicleData = @Html.Raw(Json.Serialize(ViewBag.VehicleData));
+        const vehicleSelect = document.querySelector('select[name="vehicleId"]');
+        const imgContainer = document.getElementById('vehicleImageContainer');
+        const imgPreview = document.getElementById('vehicleImagePreview');
+
+        if (vehicleSelect) {
+            vehicleSelect.addEventListener('change', function() {
+                const selectedId = this.value;
+                const vehicle = vehicleData.find(v => v.vehicleId == selectedId);
+                
+                if (vehicle && vehicle.imageUrl) {
+                    imgPreview.src = vehicle.imageUrl;
+                    imgContainer.style.display = 'block';
+                } else {
+                    imgContainer.style.display = 'none';
+                }
+            });
+        }
+    </script>
+}

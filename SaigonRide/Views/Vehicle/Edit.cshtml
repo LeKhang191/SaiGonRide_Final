@@ -1,0 +1,51 @@
+﻿@model SaigonRide.Models.Entities.Vehicle
+@{
+    ViewData["Title"] = "Edit Vehicle";
+    Layout = "_AdminLayout";
+}
+
+<div class="container py-4" style="max-width: 600px;">
+    <div class="mb-4">
+        <a asp-action="Index" class="text-decoration-none text-muted"><i class="bi bi-arrow-left"></i> Back to List</a>
+        <h2 class="fw-bold mt-2">✏️ Edit Vehicle</h2>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <form asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="VehicleId" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Vehicle Number</label>
+                    <input asp-for="VehicleNumber" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Vehicle Type</label>
+                    <select asp-for="Type" class="form-select" required>
+                        <option value="Standard Bike">Standard Bike (500đ/min)</option>
+                        <option value="Electric Bike">E-Scooter (1500đ/min)</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Station</label>
+                    <select asp-for="StationId" class="form-select" asp-items="ViewBag.StationId" required></select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Status</label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="Available">Available</option>
+                        <option value="In-Transit">In-Transit</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
