@@ -50,7 +50,7 @@ namespace SaigonRide.Controllers
             if (email == "admin@ex.com" && password == "admin123")
             {
                 HttpContext.Session.SetString("UserRole", "Admin");
-                return RedirectToAction("Index", "Station");
+                return RedirectToAction("Index", "Home");
             }
 
             var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
