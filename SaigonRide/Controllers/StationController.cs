@@ -54,6 +54,9 @@ namespace SaigonRide.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            var role = HttpContext.Session.GetString("UserRole");
+            if(role != "Admin") return Forbid();
+
             var station = _context.Stations.Find(id);
             if (station == null) return NotFound();
             return View(station);
@@ -63,11 +66,7 @@ namespace SaigonRide.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Station station)
         {
-            if (id != station.StationId)
-            {
-                return NotFound();
-            }
-
+            if (id != station.StationId) return NotFound();
             if (ModelState.IsValid)
             {
                 try
@@ -90,10 +89,7 @@ namespace SaigonRide.Controllers
         public IActionResult Delete(int id)
         {
             var role = HttpContext.Session.GetString("UserRole");
-            if(role != "Admin")
-            {
-                return Forbid();
-            }
+            if(role != "Admin") return Forbid();
 
             var station = _context.Stations.Find(id);
             if (station == null) return NotFound();
