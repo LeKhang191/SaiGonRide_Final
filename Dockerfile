@@ -9,6 +9,11 @@ RUN dotnet publish -c Release -o /app/publish --no-restore
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
+
+# Memory limits for Render free tier (512MB)
+ENV DOTNET_GCHeapHardLimit=314572800
+ENV DOTNET_SYSTEM_GC_CONSERVEMEMORY=9
+ENV DOTNET_RUNNING_IN_CONTAINER=true
+
 EXPOSE 10000
-ENV ASPNETCORE_URLS=http://+:10000
-ENTRYPOINT ["dotnet", "SaigonRide.dll"]
+CMD ["sh", "-c", "ASPNETCORE_URLS=http://+:${PORT:-10000} dotnet SaigonRide.dll"]
