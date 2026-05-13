@@ -15,6 +15,10 @@ namespace SaigonRide.Models.Entities
         public int MaxCapacity { get; set; }
         public int CurrentInventory { get; set; }
 
+        // Map
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+
         // Logic for checking
         public bool IsLowInventory => (double)CurrentInventory / MaxCapacity < 0.2;
         public bool IsDeleted { get; set; } = false;
