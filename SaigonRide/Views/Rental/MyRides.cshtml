@@ -1,0 +1,63 @@
+﻿@model IEnumerable<SaigonRide.Models.Entities.Rental>
+@{
+    ViewData["Title"] = "My Rides";
+    Layout = "_Layout";
+}
+
+<div class="container py-5" style="background-color: #F5F2E8; min-height: 100vh;">
+    <div class="mb-5 border-bottom border-dark pb-3">
+        <h2 class="fw-bold text-dark text-uppercase"><i class="bi bi-clock-history"></i> My Ride History</h2>
+        <p class="text-dark opacity-75">Review your past journeys and invoices.</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning border-dark" style="background-color: #E8E4D8; color: #000;">
+            You haven't taken any rides yet. <a href="/Station" class="fw-bold text-dark">Find a station to start!</a>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            @foreach (var ride in Model)
+            {
+                <div class="col">
+                    <div class="card shadow-sm border-dark h-100" style="background-color: #E8E4D8; border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center border-bottom border-dark pb-2 mb-3">
+                                <span class="badge bg-dark text-white text-uppercase">@ride.Status</span>
+                                <small class="text-muted fw-bold">@ride.StartTime.ToString("dd MMM yyyy")</small>
+                            </div>
+                            
+                            <h5 class="fw-bold text-dark mb-3">
+                                <i class="bi @(ride.Vehicle?.Type == "E-Scooter" ? "bi-lightning-charge-fill text-warning" : "bi-bicycle")"></i>
+                                @ride.Vehicle?.VehicleNumber
+                            </h5>
+
+                            <p class="mb-1 text-dark small">
+                                <strong><i class="bi bi-geo-alt"></i> From:</strong> @ride.StartStation?.Name <br />
+                                <span class="text-muted ms-3">@ride.StartTime.ToString("HH:mm")</span>
+                            </p>
+                            
+                            <p class="mb-3 text-dark small">
+                                <strong><i class="bi bi-geo-alt-fill"></i> To:</strong> @(ride.EndStation?.Name ?? "On-going") <br />
+                                <span class="text-muted ms-3">@(ride.EndTime?.ToString("HH:mm") ?? "---")</span>
+                            </p>
+
+                            <div class="d-flex justify-content-between align-items-end mt-auto pt-3 border-top border-dark">
+                                <div>
+                                    <small class="text-muted text-uppercase d-block" style="font-size: 0.7rem;">Total Fare</small>
+                                    <span class="fw-bold fs-5 text-dark">@(ride.FinalFare?.ToString("N0") ?? "0") VND</span>
+                                </div>
+                                @if (ride.Status == "Completed")
+                                {
+                                    <a asp-action="Receipt" asp-route-id="@ride.RentalId" class="btn btn-sm btn-outline-dark" style="border-radius: 20px;">Receipt</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

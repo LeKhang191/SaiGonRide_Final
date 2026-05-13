@@ -52,7 +52,7 @@ namespace SaigonRide.Controllers
             var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
             if (user != null)
             {
-                HttpContext.Session.SetString("UserRole", user.UserType);
+                HttpContext.Session.SetString("UserRole", user.UserType ?? "User");
                 HttpContext.Session.SetInt32("UserId", user.UserId);
                 return RedirectToAction("Index", "Home");
             }

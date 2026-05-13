@@ -234,17 +234,42 @@ namespace SaigonRide.Controllers
             return RedirectToAction("EndRental", new { id = rentalId });
         }
 
-
         private void PopulateDropdowns()
         {
-            ViewBag.Users = new SelectList(_context.Users.ToList(), "UserId", "FullName");
+            ViewBag.Users = new SelectList(_context.Users.Where(u => u.UserType != "Admin").ToList(), "UserId", "FullName");
+            ViewBag.Stations = new SelectList(_context.Stations.Where(s => !s.IsDeleted).ToList(), "StationId", "Name");
 
-            ViewBag.Vehicles = new SelectList(
-                _context.Vehicles.Where(v => v.Status == "Available")
-                .Select(v => new { v.VehicleId, Display = v.VehicleNumber + " - " + v.Type })
-                .ToList(), "VehicleId", "Display");
+            var vehicles = _context.Vehicles
+                .Where(v => v.Status == "Available")
+                .Select(v => new {
+                    v.VehicleId,
+                    Display = v.VehicleNumber + " - " + v.Type + (v.BatteryLevel.HasValue ? $" (Pin: {v.BatteryLevel}%)" : ""),
+                    ImageUrl = v.ImageUrl
+                })
+                .ToList();
 
-            ViewBag.Stations = new SelectList(_context.Stations.ToList(), "StationId", "Name");
+            ViewBag.Vehicles = new SelectList(vehicles, "VehicleId", "Display");
+            ViewBag.VehicleData = vehicles;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyRides()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var myRides = await _context.Rentals
+                .Include(r => r.Vehicle)
+                .Include(r => r.StartStation)
+                .Include(r => r.EndStation)
+                .Where(r => r.UserId == userId && !r.IsDeleted)
+                .OrderByDescending(r => r.StartTime)
+                .ToListAsync();
+
+            return View(myRides);
         }
     }
 }

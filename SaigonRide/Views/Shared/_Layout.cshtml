@@ -3,6 +3,7 @@
 
 @{
     var userRole = HttpContextAccessor.HttpContext.Session.GetString("UserRole");
+    var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserId");
 }
 
 <!DOCTYPE html>
@@ -23,7 +24,16 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item"><a class="nav-link text-dark" href="/">Home Page</a></li>
                         <li class="nav-item"><a class="nav-link text-dark" href="/Station">Station</a></li>
-    
+
+                        @if (userId != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" asp-controller="Rental" asp-action="MyRides">
+                                    <i class="bi bi-card-checklist"></i> My Rides
+                                </a>
+                            </li>
+                        }
+
                         @if (userRole == "Admin")
                         {
                             <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account" asp-action="Index">User</a></li>

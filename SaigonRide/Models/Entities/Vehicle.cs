@@ -11,5 +11,7 @@ namespace SaigonRide.Models.Entities
         public string Status { get; set; } = "Available";
         public int StationId { get; set; }
         public Station? Station { get; set; }
+        public int? BatteryLevel { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }

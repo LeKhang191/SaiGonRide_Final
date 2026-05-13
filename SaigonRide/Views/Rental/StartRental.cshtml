@@ -37,7 +37,10 @@
                             style="background-color: #F5F2E8; border-radius: 10px;">
                         <option value="">-- Choose Vehicle --</option>
                     </select>
-                    <div class="form-text text-dark opacity-50 small">Only available vehicles at current stations are shown</div>
+
+                    <div class="text-center mt-3" id="vehicleImageContainer" style="display: none;">
+                        <img id="vehicleImagePreview" src="" alt="Vehicle Preview" class="shadow-sm" style="max-height: 150px; border-radius: 10px; border: 1px solid #000; object-fit: cover;" />
+                    </div>
                 </div>
 
                 <div class="mb-4">
@@ -74,3 +77,34 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        const selectedStation = '@ViewBag.StartStationId';
+        if (selectedStation) {
+            const stationSelect = document.querySelector('select[name="startStationId"]');
+            if (stationSelect) {
+                stationSelect.value = selectedStation;
+            }
+        }
+
+        const vehicleData = @Html.Raw(Json.Serialize(ViewBag.VehicleData));
+        const vehicleSelect = document.querySelector('select[name="vehicleId"]');
+        const imgContainer = document.getElementById('vehicleImageContainer');
+        const imgPreview = document.getElementById('vehicleImagePreview');
+
+        if (vehicleSelect) {
+            vehicleSelect.addEventListener('change', function() {
+                const selectedId = this.value;
+                const vehicle = vehicleData.find(v => v.vehicleId == selectedId);
+                
+                if (vehicle && vehicle.imageUrl) {
+                    imgPreview.src = vehicle.imageUrl;
+                    imgContainer.style.display = 'block';
+                } else {
+                    imgContainer.style.display = 'none';
+                }
+            });
+        }
+    </script>
+}
