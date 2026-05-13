@@ -39,10 +39,16 @@
 
                 <div class="mb-4">
                     <label class="form-label fw-bold text-dark text-uppercase" style="font-size: 0.8rem;">📍 Pickup Station</label>
-                    <select name="startStationId" class="form-select border-dark" required asp-items="ViewBag.Stations"
-                            style="background-color: #F5F2E8; border-radius: 10px;">
+                    <select name="startStationId" class="form-select border-dark" required asp-items="ViewBag.Stations">
                         <option value="">-- Choose Pickup Point --</option>
                     </select>
+
+                    <script>
+                        const selectedStation = '@ViewBag.StartStationId';
+                        if (selectedStation) {
+                            document.querySelector('select[name="startStationId"]').value = selectedStation;
+                        }
+                    </script>
                 </div>
 
                 <div class="p-3 mb-4 border border-dark shadow-sm" style="background-color: #F5F2E8; border-radius: 15px;">

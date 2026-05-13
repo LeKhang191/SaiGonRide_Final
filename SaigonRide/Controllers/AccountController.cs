@@ -43,11 +43,19 @@ namespace SaigonRide.Controllers
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
-            if (email == "admin@tdtu.edu.vn" && password == "admin123")
+            if (email == "admin@ex.com" && password == "admin123")
+            {
+                HttpContext.Session.SetString("UserRole", "Admin");
                 return RedirectToAction("Index", "Station");
+            }
 
             var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
-            if (user != null) return RedirectToAction("Index", "Home");
+            if (user != null)
+            {
+                HttpContext.Session.SetString("UserRole", user.UserType);
+                HttpContext.Session.SetInt32("UserId", user.UserId);
+                return RedirectToAction("Index", "Home");
+            }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View();

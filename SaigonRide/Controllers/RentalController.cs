@@ -38,9 +38,13 @@ namespace SaigonRide.Controllers
         }
 
         // CREATE - GET
-        public IActionResult StartRental()
+        public IActionResult StartRental(int? stationId)
         {
             PopulateDropdowns();
+            if(stationId.HasValue)
+            {
+                ViewBag.StartStationId = stationId.Value;
+            }
             return View();
         }
 

@@ -1,4 +1,10 @@
-﻿@model IEnumerable<SaigonRide.Models.Entities.Station>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@model IEnumerable<SaigonRide.Models.Entities.Station>
+
+@{
+    var userRole = HttpContextAccessor.HttpContext.Session.GetString("UserRole");
+}
 
 @if (TempData["Error"] != null)
 {
@@ -70,19 +76,25 @@
                     <tr>
                         <td class="fw-bold">@item.Name</td>
                         <td>@item.Location</td>
-                        <td>@item.MaxCapacity</td>
-                        <td>
-                            <span class="badge @(item.IsLowInventory ? "bg-danger" : "bg-info")">
-                                @item.CurrentInventory
-                            </span>
-                        </td>
+                        @if (userRole == "Admin")
+                        {
+                            <td>@item.MaxCapacity</td>
+                            <td><span class="badge ...">@item.CurrentInventory</span></td>
+                        }
                         <td class="text-center">
-                            <a asp-controller="Station" asp-action="Edit" asp-route-id="@item.StationId" class="btn btn-sm btn-outline-warning me-2">Edit</a>
-                            
-                            <form asp-action="Delete" asp-route-id="@item.StationId" method="post" class="d-inline"
-                                  onsubmit="return confirm('Are you sure you want to delete this station?');">
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                            </form>
+                            @if (userRole == "Admin")
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.StationId" class="btn btn-sm btn-outline-warning">Edit</a>
+                                <form asp-action="Delete" asp-route-id="@item.StationId" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a asp-controller="Rental" asp-action="StartRental" asp-route-stationId="@item.StationId" class="btn btn-primary w-100">
+                                    RENT AT THIS STATION
+                                </a>
+                            }
                         </td>
                     </tr>
                 }

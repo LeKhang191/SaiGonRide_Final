@@ -1,5 +1,9 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
     ViewData["Title"] = "Home Page - SaigonRide";
+    var userRole = HttpContextAccessor.HttpContext.Session.GetString("UserRole");
 }
 
 <style>
@@ -91,36 +95,39 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4 align-items-stretch">
-        <div class="col">
-            <div class="tilt-card">
-                <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
-                    <div class="text-center mb-3">
-                        <img src="~/images/station.png" alt="Station" style="height: 60px; width: auto; filter: brightness(0);" />
-                    </div>
-                    <h4 class="fw-bold text-center text-dark text-uppercase">STATION & USER</h4>
-                    <p class="text-center text-dark small px-2">Manage the network of base stations and customers.</p>
-                    <div class="d-grid gap-2 mt-auto">
-                        <a href="/Station" class="btn btn-dark">Manage Stations</a>
-                        <a href="/Account" class="btn btn-dark">User Directory</a>
+        @if (userRole == "Admin")
+        {
+            <div class="col">
+                <div class="tilt-card">
+                    <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
+                        <div class="text-center mb-3">
+                            <img src="~/images/station.png" alt="Station" style="height: 60px; width: auto; filter: brightness(0);" />
+                        </div>
+                        <h4 class="fw-bold text-center text-dark text-uppercase">STATION & USER</h4>
+                        <p class="text-center text-dark small px-2">Manage the network of base stations and customers.</p>
+                        <div class="d-grid gap-2 mt-auto">
+                            <a href="/Station" class="btn btn-dark">Manage Stations</a>
+                            <a href="/Account" class="btn btn-dark">User Directory</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col">
-            <div class="tilt-card">
-                <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
-                    <div class="text-center mb-3">
-                        <img src="~/images/escooter.png" alt="Fleet" style="height: 60px; width: auto; filter: brightness(0);" />
-                    </div>
-                    <h4 class="fw-bold text-center text-dark text-uppercase">FLEET</h4>
-                    <p class="text-center text-dark small px-2">Vehicle inspection and maintenance status.</p>
-                    <div class="d-grid mt-auto">
-                        <a href="/Vehicle" class="btn btn-dark">Vehicle Management</a>
+            <div class="col">
+                <div class="tilt-card">
+                    <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
+                        <div class="text-center mb-3">
+                            <img src="~/images/escooter.png" alt="Fleet" style="height: 60px; width: auto; filter: brightness(0);" />
+                        </div>
+                        <h4 class="fw-bold text-center text-dark text-uppercase">FLEET</h4>
+                        <p class="text-center text-dark small px-2">Vehicle inspection and maintenance status.</p>
+                        <div class="d-grid mt-auto">
+                            <a href="/Vehicle" class="btn btn-dark">Vehicle Management</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
 
         <div class="col">
             <div class="tilt-card">

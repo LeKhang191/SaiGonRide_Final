@@ -34,6 +34,15 @@ namespace SaigonRide.Data
                 .WithMany()
                 .HasForeignKey(r => r.StartStationId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                UserId = 1,
+                FullName = "System Administrator",
+                Email = "admin@ex.com",
+                Password = "admin123",
+                UserType = "Admin"
+            });
         }
     }
 }

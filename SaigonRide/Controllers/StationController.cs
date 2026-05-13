@@ -18,6 +18,11 @@ namespace SaigonRide.Controllers
         // Read
         public IActionResult Index()
         {
+            var role = HttpContext.Session.GetString("UserRole");
+            if(role != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var stations = _context.Stations.Where(s => !s.IsDeleted).ToList();
             return View(stations);
         }
@@ -84,10 +89,14 @@ namespace SaigonRide.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
+            var role = HttpContext.Session.GetString("UserRole");
+            if(role != "Admin")
+            {
+                return Forbid();
+            }
+
             var station = _context.Stations.Find(id);
-
             if (station == null) return NotFound();
-
             if (station.CurrentInventory > 0)
             {
                 TempData["Error"] = "Cannot delete a station with vehicles. Please transfer them first!";

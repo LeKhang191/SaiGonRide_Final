@@ -14,6 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddControllersWithViews();
 
 // Payment services
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.AddScoped<IPayPalService, PayPalService>();
 builder.Services.AddDistributedMemoryCache();
