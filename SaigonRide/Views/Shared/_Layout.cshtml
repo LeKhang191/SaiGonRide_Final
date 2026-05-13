@@ -78,7 +78,12 @@
                                 </a>
                             </li>
                         }
-    
+                        <li class="nav-item d-flex align-items-center ms-3 me-3">
+                            <button id="themeToggle" class="btn btn-sm" style="border: 1px solid var(--border-color); border-radius: 20px; background: transparent; color: var(--text-color);">
+                                <i id="themeIcon" class="bi bi-moon-fill"></i>
+                            </button>
+                        </li>
+
                         <li class="nav-item ms-auto"><a class="nav-link text-danger" asp-controller="Account" asp-action="Logout">Log out</a></li>
                     </ul>
                 </div>
@@ -112,7 +117,29 @@
             }, 1000); 
         });
     </script>
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const currentTheme = localStorage.getItem('theme') || 'light';
 
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.classList.replace('bi-moon-fill', 'bi-sun-fill');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            if (theme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('bi-sun-fill', 'bi-moon-fill');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('bi-moon-fill', 'bi-sun-fill');
+            }
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

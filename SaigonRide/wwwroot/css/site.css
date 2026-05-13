@@ -2,6 +2,18 @@
     --bg-page: #F5F2E8;
     --bg-card: #E8E4D8;
     --pure-black: #000000;
+    --text-color: #000000;
+    --border-color: #000000;
+    --btn-hover: -15px 15px 0px rgba(0,0,0,1);
+}
+
+[data-theme="dark"] {
+    --bg-page: #121212;
+    --bg-card: #1E1E1E;
+    --pure-black: #F5F2E8;
+    --text-color: #F5F2E8;
+    --border-color: #444444;
+    --btn-hover: -15px 15px 0px rgba(245, 242, 232, 0.3);
 }
 
 html {
@@ -24,7 +36,22 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: var(--bg-page) !important;
+    color: var(--text-color) !important;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.text-dark {
+    color: var(--text-color) !important;
+}
+
+.border-dark {
+    border-color: var(--border-color) !important;
+}
+
+.bg-white {
+    background-color: var(--bg-card) !important;
+    border-bottom: 1px solid var(--border-color) !important;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -43,9 +70,8 @@ body {
 
 .card {
     background-color: var(--bg-card) !important;
-    border: 1px solid rgba(0,0,0,0.1) !important;
-    border-radius: 5px !important;
-    transition: all 0.3s ease;
+    border: 1px solid var(--border-color) !important;
+    transition: all 0.4s ease;
 }
 
 .card-title, .card-text, .card-header, .card h3, .card p {
@@ -57,6 +83,18 @@ body {
     -webkit-text-stroke: 0.5px var(--pure-black);
 }
 
+.btn-dark {
+    background-color: var(--text-color) !important;
+    color: var(--bg-page) !important;
+    border: 1px solid var(--text-color) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-dark:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--btn-hover) !important;
+    color: var(--bg-page) !important;
+}
 .btn-primary {
     background-color: var(--pure-black) !important;
     color: var(--bg-page) !important;
@@ -126,4 +164,23 @@ label {
     border: none !important;
     border-radius: 5px !important;
     padding: 10px 25px !important;
+}
+
+.flip-card-back {
+    background-color: var(--bg-card) !important;
+    color: var(--text-color) !important;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }
