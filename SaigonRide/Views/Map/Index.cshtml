@@ -20,18 +20,33 @@
             attribution: '© OpenStreetMap'
         }).addTo(map);
 
-        var stations = @Html.Raw(Json.Serialize(Model));
+        function loadStationsOnMap() {
+            fetch('/Map/GetStations')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(station => {
+                        if (station.latitude && station.longitude) {
+                            let markerColor = station.status === "Empty" ? "red" : (station.status === "Low" ? "orange" : "green");
+                            
+                            var marker = L.marker([station.latitude, station.longitude]).addTo(map);
+                            
+                            marker.bindPopup(`
+                                <div style="color:black; font-family: 'Arial';">
+                                    <b style="text-uppercase">${station.name}</b><br>
+                                    <span class="badge" style="background-color:${markerColor}">Status: ${station.status}</span><br>
+                                    Inventory: <b>${station.currentInventory}/${station.maxCapacity}</b><br>
+                                    <a href="/Rental/StartRental?stationId=${station.stationId}" 
+                                       class="btn btn-sm btn-dark text-white mt-2" 
+                                       style="font-size:10px; width:100%;">RENT HERE</a>
+                                </div>
+                            `);
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading stations:', error));
+        }
 
-        stations.forEach(function(station) {
-            if(station.latitude && station.longitude) {
-                L.marker([station.latitude, station.longitude])
-                 .addTo(map)
-                 .bindPopup(`
-                    <b style="font-family: 'Arial';">${station.name}</b><br>
-                    Vehicles currently available: ${station.currentInventory}<br>
-                    <a href="/Rental/StartRental?stationId=${station.stationId}" class="btn btn-sm btn-dark text-white mt-2" style="font-size:10px;">RENT HERE</a>
-                 `);
-            }
-        });
+        loadStationsOnMap();
     </script>
+}
 }

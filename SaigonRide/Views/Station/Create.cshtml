@@ -18,8 +18,20 @@
                     <label class="form-label">Max Capacity</label>
                     <input asp-for="MaxCapacity" type="number" class="form-control" required />
                 </div>
-                <button type="submit" class="btn btn-primary">Save Station</button>
-                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-dark">Latitude</label>
+                        <input asp-for="Latitude" type="number" step="any" class="form-control border-dark" placeholder="ex: 10.7769" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-dark">Longitude</label>
+                        <input asp-for="Longitude" type="number" step="any" class="form-control border-dark" placeholder="ex: 106.7009" required />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-2">Save Station</button>
+                <a asp-action="Index" class="btn btn-secondary mt-2">Back to List</a>
             </form>
         </div>
     </div>

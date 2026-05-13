@@ -38,7 +38,7 @@ namespace SaigonRide.Controllers
         [HttpPost]
         public IActionResult Create(Station station)
         {
-            if (_context.Stations.Any(s => s.Name == station.Name))
+            if (_context.Stations.Any(s => s.Name == station.Name && !s.IsDeleted))
             {
                 ModelState.AddModelError("Name", "This station name already exists.");
                 return View(station);
