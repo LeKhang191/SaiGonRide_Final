@@ -10,8 +10,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
-# Memory limits for Render free tier (512MB)
-ENV DOTNET_GCHeapHardLimit=314572800
 ENV DOTNET_SYSTEM_GC_CONSERVEMEMORY=9
 ENV DOTNET_RUNNING_IN_CONTAINER=true
 

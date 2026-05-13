@@ -49,16 +49,24 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<AppDbContext>();
-    context.Database.Migrate();
-
-    if (!context.Stations.Any())
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    try
     {
-        context.Stations.AddRange(
-            new Station { Name = "Ben Thanh Station", Location = "District 1", MaxCapacity = 50, CurrentInventory = 40 },
-            new Station { Name = "Thao Dien Station", Location = "District 2", MaxCapacity = 50, CurrentInventory = 5 } // Sẽ hiện cảnh báo < 20%
-        );
-        context.SaveChanges();
+        var context = services.GetRequiredService<AppDbContext>();
+        context.Database.Migrate();
+
+        if (!context.Stations.Any())
+        {
+            context.Stations.AddRange(
+                new Station { Name = "Ben Thanh Station", Location = "District 1", MaxCapacity = 50, CurrentInventory = 40 },
+                new Station { Name = "Thao Dien Station", Location = "District 2", MaxCapacity = 50, CurrentInventory = 5 }
+            );
+            context.SaveChanges();
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Database migration failed. App will start without DB.");
     }
 }
 
