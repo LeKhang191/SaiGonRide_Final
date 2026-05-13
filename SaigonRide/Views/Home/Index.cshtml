@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Home Page - SaigonRide";
     var userRole = HttpContextAccessor.HttpContext.Session.GetString("UserRole");
+    var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserId");
 }
 
 <style>
@@ -178,38 +179,41 @@
             </div>
         }
 
-        <div class="col">
-            <div class="tilt-card">
-                <a href="@Url.Action("Index", "Map")" class="text-decoration-none h-100">
+        @if (userId != null || userRole == "Admin")
+        {
+            <div class="col">
+                <div class="tilt-card">
+                    <a href="@Url.Action("Index", "Map")" class="text-decoration-none h-100">
+                        <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
+                            <div class="text-center mb-3">
+                                <img src="~/images/map-icon.png" alt="Map" style="height: 60px; width: auto; filter: brightness(0);"
+                                     onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/854/854878.png';" />
+                            </div>
+                            <h4 class="fw-bold text-center text-dark text-uppercase">EXPLORE MAP</h4>
+                            <p class="text-center text-dark small px-2">View all stations and real-time vehicle availability on the city map.</p>
+                            <div class="d-grid mt-auto">
+                                <span class="btn btn-dark">Open Live Map</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="tilt-card">
                     <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
                         <div class="text-center mb-3">
-                            <img src="~/images/map-icon.png" alt="Map" style="height: 60px; width: auto; filter: brightness(0);"
-                                 onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/854/854878.png';" />
+                            <img src="~/images/payment.png" alt="Payment" style="height: 60px; width: auto; filter: brightness(0);" />
                         </div>
-                        <h4 class="fw-bold text-center text-dark text-uppercase">EXPLORE MAP</h4>
-                        <p class="text-center text-dark small px-2">View all stations and real-time vehicle availability on the city map.</p>
+                        <h4 class="fw-bold text-center text-dark text-uppercase">RENTAL & PAYMENT</h4>
+                        <p class="text-center text-dark small px-2">Automated rental and invoice processing.</p>
                         <div class="d-grid mt-auto">
-                            <span class="btn btn-dark">Open Live Map</span>
+                            <a href="/Rental" class="btn btn-dark">Rental Operations</a>
                         </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="tilt-card">
-                <div class="card h-100 p-4 shadow-sm d-flex flex-column" style="background-color: #E8E4D8; border: 1px solid #000;">
-                    <div class="text-center mb-3">
-                        <img src="~/images/payment.png" alt="Payment" style="height: 60px; width: auto; filter: brightness(0);" />
-                    </div>
-                    <h4 class="fw-bold text-center text-dark text-uppercase">RENTAL & PAYMENT</h4>
-                    <p class="text-center text-dark small px-2">Automated rental and invoice processing.</p>
-                    <div class="d-grid mt-auto">
-                        <a href="/Rental" class="btn btn-dark">Rental Operations</a>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 
     <div class="about-section reveal mt-5 py-5">

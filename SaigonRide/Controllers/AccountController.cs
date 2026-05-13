@@ -28,7 +28,11 @@ namespace SaigonRide.Controllers
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
-                return RedirectToAction("Login", "Account");
+
+                HttpContext.Session.SetString("UserRole", user.UserType ?? "User");
+                HttpContext.Session.SetInt32("UserId", user.UserId);
+
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
