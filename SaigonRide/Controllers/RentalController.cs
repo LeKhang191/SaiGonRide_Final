@@ -103,6 +103,7 @@ namespace SaigonRide.Controllers
         {
             var rental = await _context.Rentals
                 .Include(r => r.Vehicle)
+                .Include(r => r.User)
                 .FirstOrDefaultAsync(r => r.RentalId == rentalId && r.Status == "Active");
 
             if (rental == null) return NotFound();
@@ -112,11 +113,13 @@ namespace SaigonRide.Controllers
             duration = duration < 0 ? 120 : Math.Max(1, duration);
             double rate = (rental.Vehicle?.Type == "Electric Bike") ? 1500 : 500;
             double baseFare = Math.Max(1, duration) * rate;
+            double co2Saved = Math.Max(1, duration) * 50;
 
             rental.EndTime = endTime;
             rental.EndStationId = endStationId;
             rental.BaseFare = baseFare;
             rental.FinalFare = baseFare;
+            rental.Co2Saved = co2Saved;
             rental.PaymentMethod = paymentMethod;
             rental.Vehicle.Status = "Available";
 
@@ -136,6 +139,11 @@ namespace SaigonRide.Controllers
                 {
                     return Redirect(url);
                 }
+            }
+
+            if (rental.User != null)
+            {
+                rental.User.TotalCo2Saved += co2Saved;
             }
 
             rental.Status = "Completed";
@@ -270,6 +278,18 @@ namespace SaigonRide.Controllers
                 .ToListAsync();
 
             return View(myRides);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Leaderboard()
+        {
+            var topUsers = await _context.Users
+                .Where(u => u.UserType != "Admin" && u.TotalCo2Saved > 0)
+                .OrderByDescending(u => u.TotalCo2Saved)
+                .Take(10)
+                .ToListAsync();
+
+            return View(topUsers);
         }
     }
 }

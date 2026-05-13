@@ -14,6 +14,9 @@
     <title>@ViewData["Title"] - SaigonRide</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
         .btn-dark {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -63,6 +66,11 @@
                         @if (userId != null)
                         {
                             <li class="nav-item">
+                                <a class="nav-link text-success fw-bold" asp-controller="Rental" asp-action="Leaderboard">
+                                    <i class="bi bi-tree-fill"></i> Eco Leaderboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark fw-bold" asp-controller="Rental" asp-action="MyRides">
                                     <i class="bi bi-card-checklist"></i> My Rides
                                 </a>
@@ -79,7 +87,7 @@
                             </li>
                         }
                         <li class="nav-item d-flex align-items-center ms-3 me-3">
-                            <button id="themeToggle" class="btn btn-sm" style="border: 1px solid var(--border-color); border-radius: 20px; background: transparent; color: var(--text-color);">
+                            <button id="themeToggle" class="btn btn-sm" style="border: 1px solid var(--border-color); border-radius: 5px; background: transparent; color: var(--text-color);">
                                 <i id="themeIcon" class="bi bi-moon-fill"></i>
                             </button>
                         </li>

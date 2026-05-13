@@ -22,7 +22,7 @@
             @foreach (var ride in Model)
             {
                 <div class="col">
-                    <div class="card shadow-sm border-dark h-100" style="background-color: #E8E4D8; border-radius: 10px;">
+                    <div class="card shadow-sm border-dark h-100" style="background-color: #E8E4D8; border-radius: 5px;">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center border-bottom border-dark pb-2 mb-3">
                                 <span class="badge bg-dark text-white text-uppercase">@ride.Status</span>
@@ -51,7 +51,7 @@
                                 </div>
                                 @if (ride.Status == "Completed")
                                 {
-                                    <a asp-action="Receipt" asp-route-id="@ride.RentalId" class="btn btn-sm btn-outline-dark" style="border-radius: 20px;">Receipt</a>
+                                    <a asp-action="Receipt" asp-route-id="@ride.RentalId" class="btn btn-sm btn-outline-dark" style="border-radius: 5px;">Receipt</a>
                                 }
                             </div>
                         </div>

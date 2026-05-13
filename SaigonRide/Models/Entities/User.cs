@@ -8,5 +8,6 @@
         public string Password { get; set; } = string.Empty;
         public string UserType { get; set; } = "Local";
         public string IdNumber { get; set; } = string.Empty;
+        public double TotalCo2Saved { get; set; } = 0;
     }
 }
