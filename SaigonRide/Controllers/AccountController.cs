@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using SaigonRide.Data;
 using SaigonRide.Models.Entities;
 using System.Linq;
@@ -133,7 +133,6 @@ namespace SaigonRide.Controllers
         {
             HttpContext.Session.Clear();
             TempData["Success"] = "You have been logged out.";
-
             return RedirectToAction("Login", "Account");
         }
     }

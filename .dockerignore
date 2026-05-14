@@ -1,0 +1,7 @@
+SaigonRide/bin/
+SaigonRide/obj/
+SaigonRide/publish/
+SaigonRide.AutomationTests/
+.git/
+*.pem
+*.md
