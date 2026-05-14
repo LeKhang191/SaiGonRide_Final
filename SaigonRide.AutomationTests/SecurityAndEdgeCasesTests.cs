@@ -44,7 +44,8 @@ namespace SaigonRide.AutomationTests
 
             driver.FindElement(By.Name("FullName")).SendKeys("Hacker");
             driver.FindElement(By.Name("Email")).SendKeys("khangle@ex.com");
-            driver.FindElement(By.Name("Password")).SendKeys("123456");
+            driver.FindElement(By.Name("Password")).SendKeys("123456"); 
+            driver.FindElement(By.Name("IdNumber")).SendKeys("079210100101");
             driver.FindElement(By.XPath("//button[@type='submit']")).Click();
             Thread.Sleep(1500);
 
@@ -59,10 +60,9 @@ namespace SaigonRide.AutomationTests
         [Test]
         public void Test_StartRental_NoVehicleOrMissingData_CannotSubmit()
         {
-            // Bước 1: Login
             driver.Navigate().GoToUrl(baseUrl + "/Account/Login");
             driver.FindElement(By.Name("email")).SendKeys("khangle@ex.com");
-            driver.FindElement(By.Name("password")).SendKeys("1234");
+            driver.FindElement(By.Name("password")).SendKeys("admin123");
             driver.FindElement(By.XPath("//button[@type='submit']")).Click();
             Thread.Sleep(2000);
 

@@ -40,6 +40,11 @@ namespace SaigonRide.Controllers
         // CREATE - GET
         public IActionResult StartRental(int? stationId)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             PopulateDropdowns();
             if(stationId.HasValue)
             {
@@ -53,6 +58,11 @@ namespace SaigonRide.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> StartRental(int userId, int vehicleId, int startStationId)
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var vehicle = await _context.Vehicles.FindAsync(vehicleId);
 
             if (vehicle == null || vehicle.Status != "Available")

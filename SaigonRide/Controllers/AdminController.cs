@@ -16,6 +16,11 @@ namespace SaigonRide.Controllers
 
         public IActionResult Dashboard()
         {
+            if (HttpContext.Session.GetString("UserRole") != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             ViewBag.TotalVehicles = _context.Vehicles.Count();
             ViewBag.TotalStations = _context.Stations.Count();
             ViewBag.AvailableBikes = _context.Vehicles.Count(v => v.Status == "Available");

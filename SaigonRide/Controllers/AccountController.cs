@@ -18,6 +18,13 @@ namespace SaigonRide.Controllers
         [HttpPost]
         public IActionResult Register(User user)
         {
+            bool emailExists = _context.Users.Any(u => u.Email == user.Email);
+            if (emailExists)
+            {
+                ModelState.AddModelError("Email", "This email address has already been used.");
+                return View(user);
+            }
+
             if (string.IsNullOrEmpty(user.FullName) || string.IsNullOrEmpty(user.Email))
             {
                 ModelState.AddModelError(string.Empty, "Please fill in your name and email.");
