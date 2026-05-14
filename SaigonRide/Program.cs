@@ -75,5 +75,12 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Run($"http://+:{port}");
+if (app.Environment.IsDevelopment())
+{
+    app.Run();
+}
+else
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    app.Run($"http://+:{port}");
+}

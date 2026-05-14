@@ -75,7 +75,8 @@ namespace SaigonRide.AutomationTests
             IWebElement stationDropdown = driver.FindElement(By.Name("startStationId"));
             new SelectElement(stationDropdown).SelectByIndex(1);
 
-            driver.FindElement(By.XPath("//button[@type='submit']")).Click();
+            IWebElement submitBtn = driver.FindElement(By.XPath("//button[@type='submit']"));
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", submitBtn);
             Thread.Sleep(1500);
 
             Assert.That(driver.Url.Contains("/Rental/StartRental"), Is.True,

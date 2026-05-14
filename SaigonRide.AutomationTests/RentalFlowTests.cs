@@ -51,19 +51,20 @@ namespace SaigonRide.AutomationTests
             selectVehicle.SelectByIndex(1);
 
 
-            driver.FindElement(By.XPath("//button[@type='submit']")).Click();
+            IWebElement startRentalBtn = driver.FindElement(By.XPath("//button[@type='submit']"));
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", startRentalBtn);
             Thread.Sleep(2500);
 
             IWebElement endBtn = driver.FindElement(By.PartialLinkText("END"));
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", endBtn);
 
-            Thread.Sleep(1500);
+            Thread.Sleep(2500);
 
             IWebElement endStationDropdown = driver.FindElement(By.Name("endStationId"));
             SelectElement selectEndStation = new SelectElement(endStationDropdown);
             selectEndStation.SelectByIndex(1);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(2500);
 
             IWebElement cashRadio = driver.FindElement(By.Id("cash"));
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", cashRadio);
