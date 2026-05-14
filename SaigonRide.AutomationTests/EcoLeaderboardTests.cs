@@ -1,7 +1,5 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System.Threading;
 
 namespace SaigonRide.AutomationTests
 {
@@ -31,8 +29,9 @@ namespace SaigonRide.AutomationTests
         }
 
         [TearDown]
-        public void Teardown() { 
-            driver?.Quit(); 
+        public void Teardown()
+        {
+            driver?.Quit();
             driver?.Dispose();
         }
     }
