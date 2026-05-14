@@ -13,7 +13,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.AddScoped<IPayPalService, PayPalService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SaigonRide.Data;
 using SaigonRide.Models.Entities;
-using SaigonRide.Services;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,19 +9,14 @@ namespace SaigonRide.Controllers
     public class AccountController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly IEmailService _emailService;
 
-        public AccountController(AppDbContext context, IEmailService emailService)
-        {
-            _context = context;
-            _emailService = emailService;
-        }
+        public AccountController(AppDbContext context) => _context = context;
 
         [HttpGet]
         public IActionResult Register() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Register(User user)
+        public IActionResult Register(User user)
         {
             if (string.IsNullOrEmpty(user.FullName) || string.IsNullOrEmpty(user.Email))
             {
@@ -30,100 +24,21 @@ namespace SaigonRide.Controllers
                 return View(user);
             }
 
-            if (_context.Users.Any(u => u.Email == user.Email))
-            {
-                ModelState.AddModelError(string.Empty, "Email này đã được sử dụng.");
-                return View(user);
-            }
-
-            var otp = new Random().Next(100000, 999999).ToString();
-            HttpContext.Session.SetString("PendingOtp", otp);
-            HttpContext.Session.SetString("OtpExpiry", DateTime.UtcNow.AddMinutes(5).ToString("O"));
-            HttpContext.Session.SetString("PendingUser_Name", user.FullName);
-            HttpContext.Session.SetString("PendingUser_Email", user.Email);
-            HttpContext.Session.SetString("PendingUser_Password", user.Password ?? "");
-            HttpContext.Session.SetString("PendingUser_Type", user.UserType ?? "Local Tourist");
-            HttpContext.Session.SetString("PendingUser_IdNumber", user.IdNumber ?? "");
-
-            try
-            {
-                await _emailService.SendOtpAsync(user.Email, otp);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "Không thể gửi email. Vui lòng kiểm tra lại địa chỉ email: " + ex.Message);
-                return View(user);
-            }
-
-            TempData["PendingEmail"] = user.Email;
-            return RedirectToAction("VerifyOtp");
-        }
-
-        [HttpGet]
-        public IActionResult VerifyOtp()
-        {
-            ViewBag.Email = TempData["PendingEmail"] as string
-                ?? HttpContext.Session.GetString("PendingUser_Email");
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult VerifyOtp(string otpCode)
-        {
-            var storedOtp = HttpContext.Session.GetString("PendingOtp");
-            var expiryStr = HttpContext.Session.GetString("OtpExpiry");
-
-            if (storedOtp == null || expiryStr == null)
-            {
-                ModelState.AddModelError("", "Phiên đăng ký đã hết hạn. Vui lòng đăng ký lại.");
-                return View();
-            }
-
-            if (DateTime.Parse(expiryStr, null, System.Globalization.DateTimeStyles.RoundtripKind) < DateTime.UtcNow)
-            {
-                ModelState.AddModelError("", "Mã OTP đã hết hạn. Vui lòng đăng ký lại.");
-                return View();
-            }
-
-            if (otpCode != storedOtp)
-            {
-                ModelState.AddModelError("", "Mã OTP không đúng. Vui lòng thử lại.");
-                ViewBag.Email = HttpContext.Session.GetString("PendingUser_Email");
-                return View();
-            }
-
-            var user = new User
-            {
-                FullName = HttpContext.Session.GetString("PendingUser_Name")!,
-                Email = HttpContext.Session.GetString("PendingUser_Email")!,
-                Password = HttpContext.Session.GetString("PendingUser_Password")!,
-                UserType = HttpContext.Session.GetString("PendingUser_Type"),
-                IdNumber = HttpContext.Session.GetString("PendingUser_IdNumber"),
-            };
-
-            HttpContext.Session.Remove("PendingOtp");
-            HttpContext.Session.Remove("OtpExpiry");
-            HttpContext.Session.Remove("PendingUser_Name");
-            HttpContext.Session.Remove("PendingUser_Email");
-            HttpContext.Session.Remove("PendingUser_Password");
-            HttpContext.Session.Remove("PendingUser_Type");
-            HttpContext.Session.Remove("PendingUser_IdNumber");
-
             try
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
+
+                HttpContext.Session.SetString("UserRole", user.UserType ?? "User");
+                HttpContext.Session.SetInt32("UserId", user.UserId);
+
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Lỗi lưu tài khoản: " + ex.Message);
-                return View();
+                ModelState.AddModelError(string.Empty, "Error saving to DB: " + ex.Message);
+                return View(user);
             }
-
-            HttpContext.Session.SetString("UserRole", user.UserType ?? "User");
-            HttpContext.Session.SetInt32("UserId", user.UserId);
-
-            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
