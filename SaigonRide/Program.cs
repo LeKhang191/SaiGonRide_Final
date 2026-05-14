@@ -5,8 +5,18 @@ using SaigonRide.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(connectionString));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseNpgsql(connectionString));
+}
 
 builder.Services.AddControllersWithViews();
 
@@ -48,7 +58,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<AppDbContext>();
-        context.Database.Migrate();
+        context.Database.EnsureCreated();
 
         if (!context.Stations.Any())
         {
