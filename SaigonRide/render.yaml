@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: saigonride
+    env: docker
+    plan: free
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: saigonride-db
+          property: connectionString
+      - key: Email__Username
+        sync: false
+      - key: Email__Password
+        sync: false
+      - key: Email__FromAddress
+        sync: false
+
+databases:
+  - name: saigonride-db
+    databaseName: saigonride
+    plan: free

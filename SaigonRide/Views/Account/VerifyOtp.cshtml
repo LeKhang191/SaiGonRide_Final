@@ -1,0 +1,74 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xác minh OTP - SaigonRide</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body, html { height: 100%; margin: 0; font-family: 'Segoe UI', sans-serif; }
+        .bg-image {
+            background-image: url('/images/scooter.jpg');
+            background-size: cover; background-position: center;
+            height: 100%; display: flex; align-items: center; justify-content: center;
+        }
+        .otp-card {
+            background: #F5F2E8; padding: 40px; border-radius: 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); width: 100%; max-width: 460px;
+        }
+        .otp-input {
+            font-size: 28px; font-weight: bold; letter-spacing: 10px;
+            text-align: center; border: 2px solid #C7A07A; border-radius: 8px;
+            padding: 12px;
+        }
+        .otp-input:focus { outline: none; border-color: #2D2D2D; box-shadow: none; }
+        .btn-verify {
+            background-color: #2D2D2D; color: white; border-radius: 5px;
+            padding: 12px; font-weight: bold; border: none; width: 100%; margin-top: 1rem;
+        }
+        .btn-verify:hover { background-color: #000; }
+        .form-label { font-size: 0.75rem; font-weight: bold; color: #666; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+<div class="bg-image">
+    <div class="otp-card">
+        <div class="mb-3">
+            <h4 class="fw-bold">Saigon<span class="text-primary">Ride</span></h4>
+        </div>
+        <h2 class="fw-bold mb-2">Xác minh Email</h2>
+        <p class="text-muted mb-1 small">
+            Chúng tôi đã gửi mã OTP 6 chữ số đến:
+        </p>
+        <p class="fw-bold mb-4">@ViewBag.Email</p>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <div class="alert alert-danger py-2">@error.ErrorMessage</div>
+            }
+        }
+
+        <form method="post" asp-action="VerifyOtp">
+            <div class="mb-3">
+                <label class="form-label">Nhập mã OTP</label>
+                <input type="text" name="otpCode" class="form-control otp-input"
+                       maxlength="6" placeholder="······" autocomplete="one-time-code"
+                       inputmode="numeric" pattern="[0-9]{6}" required autofocus />
+            </div>
+            <button type="submit" class="btn btn-verify">Xác nhận</button>
+        </form>
+
+        <div class="text-center mt-3 small text-muted">
+            Mã có hiệu lực trong <strong>5 phút</strong>.
+            Không nhận được mã?
+            <a asp-controller="Account" asp-action="Register" class="text-decoration-none fw-bold">Đăng ký lại</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
