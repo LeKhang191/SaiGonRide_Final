@@ -1,9 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY SaigonRide/*.csproj ./SaigonRide/
-RUN dotnet restore ./SaigonRide/
+RUN dotnet restore ./SaigonRide/SaigonRide.csproj
 COPY SaigonRide/ ./SaigonRide/
-RUN dotnet publish ./SaigonRide/ -c Release -o /app/publish --no-restore
+RUN dotnet publish ./SaigonRide/SaigonRide.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
