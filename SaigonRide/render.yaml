@@ -3,6 +3,8 @@ services:
     name: saigonride
     env: docker
     plan: free
+    rootDir: SaigonRide
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
