@@ -37,6 +37,28 @@ namespace SaigonRide.Controllers
             return View(rentals);
         }
 
+        // DELETE - POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userRole = HttpContext.Session.GetString("UserType");
+            if (userRole != "Admin")
+            {
+                return Forbid();
+            }
+
+            var rental = await _context.Rentals.FindAsync(id);
+            if (rental != null)
+            {
+                _context.Rentals.Remove(rental);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "Rental record deleted successfully!";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
         // CREATE - GET
         public IActionResult StartRental(int? stationId)
         {
