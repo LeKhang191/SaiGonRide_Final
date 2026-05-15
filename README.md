@@ -56,7 +56,7 @@ To facilitate the grading process, please use the following pre-configured accou
 | **PayPal** | sb-3eeu451084325@personal.example.com | RX+7,x^R |
 
 | Wallet | IDNumber | FullName | Date | OTP |
-| :--- | :--- | :--- || :--- | :--- | 
+| :--- | :--- | :--- | :--- | :--- | 
 | **VnPay** | 9704198526191432198| NGUYEN VAN A | 07/15 | 123456 |
 
 ---
