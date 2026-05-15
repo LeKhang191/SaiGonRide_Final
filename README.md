@@ -1,4 +1,4 @@
-# SaigonRide - Distributed Vehicle Rental System
+# SaigonRide 
 
 **Course:** Software Engineering (Semester 2 - 2025-2026)
 **Team:** F2
