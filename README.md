@@ -1,4 +1,4 @@
-# SaigonRide
+# SaigonRide - Distributed Vehicle Rental System
 
 **Course:** Software Engineering (Semester 2 - 2025-2026)
 **Team:** F2
@@ -22,7 +22,7 @@ The team has provided the necessary SQL scripts in the `Database/` directory. Pl
 4. Verify the connection string in **`appsettings.json`** to ensure it matches your local server instance configuration.
 
 ### How to Run the Project
-1. Open the **`SaigonRide.sln`** solution file in Visual Studio.
+1. Open the **`SaigonRide.slnx`** solution file in Visual Studio.
 2. Press **F5** or click the Start button to run the application using IIS Express or the SaigonRide profile.
 3. The system will automatically launch in your default web browser at `localhost`.
 
@@ -38,6 +38,8 @@ This project includes a comprehensive Automation Testing suite utilizing Seleniu
 3. Select **Run**.
 4. **Result Expected:** 8/8 Test Cases passed successfully (covering Login, Start Rental, and Payment workflows).
 
+**NOTICE:** There have an error when you need to create vehicle, station for running automation tests smoothly.
+
 ---
 
 ## 3. Test Credentials
@@ -48,6 +50,14 @@ To facilitate the grading process, please use the following pre-configured accou
 | :--- | :--- | :--- |
 | **Admin** | admin@ex.com | admin123 |
 | **User** | user1@ex.com | 123456 |
+
+| Wallet | Email | Password |
+| :--- | :--- | :--- |
+| **PayPal** | sb-3eeu451084325@personal.example.com | RX+7,x^R |
+
+| Wallet | IDNumber | FullName | Date | OTP |
+| :--- | :--- | :--- || :--- | :--- | 
+| **VnPay** | 9704198526191432198| NGUYEN VAN A | 07/15 | 123456 |
 
 ---
 
