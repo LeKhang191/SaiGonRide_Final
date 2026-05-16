@@ -7,10 +7,32 @@ services:
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
-      - key: ConnectionStrings__DefaultConnection
+      - key: DB_HOST
         fromDatabase:
           name: saigonride-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: saigonride-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: saigonride-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: saigonride-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: saigonride-db
+          property: password
+      - key: Email__Username
+        sync: false
+      - key: Email__Password
+        sync: false
+      - key: Email__FromAddress
+        sync: false
 
 databases:
   - name: saigonride-db
