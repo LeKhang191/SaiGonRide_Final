@@ -144,10 +144,10 @@
                                         }
 
                                         @{
-                                            var userRole = Context.Session.GetString("UserType");
+                                            var userRole = Context.Session.GetString("UserRole");
                                         }
 
-                                        @if (userRole == "Admin")
+                                        @if (string.Equals(userRole, "Admin", StringComparison.OrdinalIgnoreCase))
                                         {
                                             <form asp-controller="Rental" asp-action="Delete" asp-route-id="@rental.RentalId" method="post"
                                                   onsubmit="return confirm('Delete record?');" style="display:inline;">

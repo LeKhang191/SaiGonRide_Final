@@ -42,7 +42,7 @@ namespace SaigonRide.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var userRole = HttpContext.Session.GetString("UserType");
+            var userRole = HttpContext.Session.GetString("UserRole");
             if (userRole != "Admin")
             {
                 return Forbid();
