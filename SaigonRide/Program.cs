@@ -14,9 +14,16 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    // Render.com injects DATABASE_URL if ConnectionStrings__DefaultConnection is not set
     if (string.IsNullOrEmpty(connectionString))
-        connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+    {
+        var host = Environment.GetEnvironmentVariable("DB_HOST");
+        var port = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
+        var database = Environment.GetEnvironmentVariable("DB_NAME");
+        var user = Environment.GetEnvironmentVariable("DB_USER");
+        var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+        if (!string.IsNullOrEmpty(host))
+            connectionString = $"Host={host};Port={port};Database={database};Username={user};Password={password};SSL Mode=Require;Trust Server Certificate=true";
+    }
 
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(connectionString));
