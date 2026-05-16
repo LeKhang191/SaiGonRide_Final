@@ -14,6 +14,10 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
+    // Render.com injects DATABASE_URL if ConnectionStrings__DefaultConnection is not set
+    if (string.IsNullOrEmpty(connectionString))
+        connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(connectionString));
 }
